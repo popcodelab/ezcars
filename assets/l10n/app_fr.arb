@@ -1,0 +1,41 @@
+{
+  "navHome": "Accueil",
+  "@navHome": {
+    "description": "Label for the Home navigation destination"
+  },
+  "navSettings": "Paramètres",
+  "@navSettings": {
+    "description": "Label for the Settings navigation destination"
+  },
+  "navProfile": "Profil",
+  "@navProfile": {
+    "description": "Label for the Profile navigation destination"
+  },
+  "btnDetails": "Détails",
+  "languageLabel": "Langue",
+  "navDetails": "Aller aux détails",
+  "showDetails": "Afficher les détails",
+  "@showDetails": {
+    "description": "Button label to show more details"
+  },
+  "hideDetails": "Masquer les détails",
+  "@hideDetails": {
+    "description": "Button label to hide details"
+  },
+  "location": "Emplacement",
+  "@location": {
+    "description": "Label for specifying a place"
+  },
+  "latitude": "Latitude",
+  "@latitude": {
+    "description": "Label for specifying latitude coordinate"
+  },
+  "longitude": "Longitude",
+  "@longitude": {
+    "description": "Label for specifying longitude coordinate"
+  },
+  "animalListTitle": "Liste des animaux",
+  "@animalListTitle": {
+    "description": "Title for the Animal List screen"
+  }
+}

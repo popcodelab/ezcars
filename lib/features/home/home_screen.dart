@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'model/animal.dart';
 import 'services/impl/animal_service.dart';
@@ -18,12 +19,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    //List<Animal> animals = widget.animalService.getAnimals().take(5).toList();
     List<Animal> animals = widget.animalService.getAnimals();
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Animal List'),
+        title: Text(AppLocalizations.of(context)!.animalListTitle),
       ),
       body: ListView.builder(
         itemCount: animals.length,
@@ -33,54 +33,69 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Column(
               children: [
                 ListTile(
-                  leading:  Image.asset(animal.imageUrl, width: 50, height: 50), // Use Image.asset
+                  leading: Image.asset(animal.imageUrl, width: 50, height: 50), // Change to Image.network if needed
                   title: Text(animal.name),
                   subtitle: Text(
-                      'Location: ${animal.latitude.toStringAsFixed(4)}, ${animal.longitude.toStringAsFixed(4)}'),
+                      '${AppLocalizations.of(context)!.location}: ${animal.latitude.toStringAsFixed(4)}, ${animal.longitude.toStringAsFixed(4)}'),
                   trailing: ElevatedButton(
                     onPressed: () {
                       setState(() {
-                        _selectedAnimalIndex = (_selectedAnimalIndex == index)
-                            ? null
-                            : index; // Toggle details visibility
+                        // Toggle details visibility
+                        _selectedAnimalIndex = (_selectedAnimalIndex == index) ? null : index;
                       });
                     },
-                    child: Text(_selectedAnimalIndex == index ? 'Hide Details' : 'Show Details'),
+                    child: Text(
+                      _selectedAnimalIndex == index
+                          ? AppLocalizations.of(context)!.hideDetails
+                          : AppLocalizations.of(context)!.showDetails,
+                    ),
                   ),
                 ),
                 if (_selectedAnimalIndex == index)
-                  Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Image.asset(
-                          animal.imageUrl,
-                          height: 150,
-                          width: double.infinity,
-                          fit: BoxFit.cover,
-                        ),
-                        const SizedBox(height: 8.0),
-                        Text(
-                          animal.name,
-                          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                        ),
-                        const SizedBox(height: 4.0),
-                        Text(
-                          'Latitude: ${animal.latitude.toStringAsFixed(4)}',
-                          style: const TextStyle(fontSize: 16),
-                        ),
-                        Text(
-                          'Longitude: ${animal.longitude.toStringAsFixed(4)}',
-                          style: const TextStyle(fontSize: 16),
-                        ),
-                      ],
-                    ),
-                  ),
+                  AnimalDetails(animal: animal), // Extracted details widget
               ],
             ),
           );
         },
+      ),
+    );
+  }
+}
+
+// Extracted widget for displaying animal details
+class AnimalDetails extends StatelessWidget {
+  final Animal animal;
+
+  const AnimalDetails({super.key, required this.animal});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Image.asset(
+            animal.imageUrl,
+            height: 150,
+            width: double.infinity,
+            fit: BoxFit.cover,
+          ),
+          const SizedBox(height: 8.0),
+          Text(
+            animal.name,
+            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 4.0),
+          Text(
+            '${AppLocalizations.of(context)!.latitude}: ${animal.latitude.toStringAsFixed(4)}',
+            style: const TextStyle(fontSize: 16),
+          ),
+          Text(
+            '${AppLocalizations.of(context)!.longitude}: ${animal.longitude.toStringAsFixed(4)}',
+            style: const TextStyle(fontSize: 16),
+          ),
+        ],
       ),
     );
   }

@@ -1,0 +1,41 @@
+{
+  "navHome": "홈",
+  "@navHome": {
+    "description": "Label for the Home navigation destination"
+  },
+  "navSettings": "설정",
+  "@navSettings": {
+    "description": "Label for the Settings navigation destination"
+  },
+  "navProfile": "프로필",
+  "@navProfile": {
+    "description": "Label for the Profile navigation destination"
+  },
+  "btnDetails": "세부",
+  "languageLabel": "언어",
+  "navDetails": "세부 사항으로 이동",
+  "showDetails": "세부 정보 보기",
+  "@showDetails": {
+    "description": "Button label to show more details"
+  },
+  "hideDetails": "세부 정보 숨기기",
+  "@hideDetails": {
+    "description": "Button label to hide details"
+  },
+  "location": "위치",
+  "@location": {
+    "description": "Label for specifying a place"
+  },
+  "latitude": "위도",
+  "@latitude": {
+    "description": "Label for specifying latitude coordinate"
+  },
+  "longitude": "경도",
+  "@longitude": {
+    "description": "Label for specifying longitude coordinate"
+  },
+  "animalListTitle": "동물 목록",
+  "@animalListTitle": {
+    "description": "Title for the Animal List screen"
+  }
+}

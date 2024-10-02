@@ -1,0 +1,45 @@
+{
+
+  "navHome": "بيت",
+  "@navHome": {
+    "description": "Label for the Home navigation destination"
+  },
+  "navSettings": "إعدادات",
+  "@navSettings": {
+    "description": "Label for the Settings navigation destination"
+  },
+  "navProfile": "حساب تعريفي",
+  "@navProfile": {
+    "description": "Label for the Profile navigation destination"
+  }
+  ,
+  "btnDetails": "تفاصيل",
+  "languageLabel": "لغة",
+  "navDetails": "انتقل إلى التفاصيل",
+  "@navProfile": {
+    "description": "Label for the Got to details button"
+  },
+  "showDetails": "عرض التفاصيل",
+  "@showDetails": {
+    "description": "Button label to show more details"
+  },
+  "hideDetails": "إخفاء التفاصيل",
+  "@hideDetails": {
+    "description": "Button label to hide details"
+  },
+  "location": "موقع",
+  "@location": {
+    "description": "Label for specifying a place"
+  },
+  "latitude": "خط العرض",
+  "@latitude": {
+    "description": "Label for specifying latitude coordinate"
+  },
+  "longitude": "خط الطول",
+  "@longitude": {
+    "description": "Label for specifying longitude coordinate"
+  }, "animalListTitle": "قائمة الحيوانات",
+  "@animalListTitle": {
+    "description": "Title for the Animal List screen"
+  }
+}
