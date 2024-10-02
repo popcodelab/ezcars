@@ -12,7 +12,7 @@
     "description": "Label for the Profile navigation destination"
   },
   "btnDetails": "Details",
-  "languageLabel": "لغة",
+  "languageLabel": "Language",
   "navDetails": "Go to details",
   "showDetails": "Show details",
   "@showDetails": {
