@@ -1,3 +1,4 @@
+import 'package:ezcars/features/search/search_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
@@ -16,13 +17,16 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
+  // Index of the currently selected tab
   int _selectedIndex = 0;
 
-  // A list of keys for managing each Navigator independently, allowing for maintaining separate navigation stacks
-  final List<GlobalKey<NavigatorState>> _navigatorKeys = List.generate(
-    3,
-    (index) => GlobalKey<NavigatorState>(),
-  );
+  // List of screens corresponding to each tab
+  final List<Widget> _screens = [
+    HomeScreen(animalService: AnimalService()), // Home screen with AnimalService dependency
+    const SearchScreen(), // Search screen
+    const SettingsScreen(), // Settings screen
+    const ProfileScreen(), // Profile screen
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -30,75 +34,57 @@ class _MainScreenState extends State<MainScreen> {
     final locale = Provider.of<MyAppState>(context).locale;
 
     return Scaffold(
+      // The body contains the screen corresponding to the selected index
       body: SafeArea(
-        child: Navigator(
-          key: _navigatorKeys[_selectedIndex],
-          onGenerateRoute: _generateRoute,
-        ),
+        child: _screens[_selectedIndex], // Display the current screen
       ),
-      // BottomNavigationBar used for navigation between screens
+      // BottomNavigationBar used to switch between different screens
       bottomNavigationBar: _buildBottomNavigationBar(context),
     );
   }
 
-  // Handles item selection for the BottomNavigationBar
+  // Method to handle tab selection in BottomNavigationBar
   void _onDestinationSelected(int index) {
     setState(() {
-      _selectedIndex = index;
+      _selectedIndex = index; // Update the selected index
     });
   }
 
-  // Builds the BottomNavigationBar
+  // Method to build the BottomNavigationBar
   BottomNavigationBar _buildBottomNavigationBar(BuildContext context) {
     return BottomNavigationBar(
-      currentIndex: _selectedIndex,
-      onTap: _onDestinationSelected,
+      currentIndex: _selectedIndex, // Set the current active tab
+      onTap: _onDestinationSelected, // Call the method to handle tab switching
+      type: BottomNavigationBarType.fixed, // Ensure the bar items are always visible
       items: [
         _buildBottomNavigationBarItem(
           icon: Icons.home,
-          label: AppLocalizations.of(context)!.navHome,
+          label: AppLocalizations.of(context)?.navHome ?? 'Home', // Fallback to 'Home' if localization fails
+        ),
+        _buildBottomNavigationBarItem(
+          icon: Icons.search,
+          label: AppLocalizations.of(context)?.navSearch ?? 'Search', // Fallback to 'Search' if localization fails
         ),
         _buildBottomNavigationBarItem(
           icon: Icons.settings,
-          label: AppLocalizations.of(context)!.navSettings,
+          label: AppLocalizations.of(context)?.navSettings ?? 'Settings', // Fallback to 'Settings' if localization fails
         ),
         _buildBottomNavigationBarItem(
           icon: Icons.person,
-          label: AppLocalizations.of(context)!.navProfile,
+          label: AppLocalizations.of(context)?.navProfile ?? 'Profile', // Fallback to 'Profile' if localization fails
         ),
       ],
     );
   }
 
-  // Builds a BottomNavigationBar item
+  // Helper method to build each BottomNavigationBar item
   BottomNavigationBarItem _buildBottomNavigationBarItem({
     required IconData icon,
     required String label,
   }) {
     return BottomNavigationBarItem(
-      icon: Icon(icon),
-      label: label,
+      icon: Icon(icon), // Icon for the tab
+      label: label, // Label for the tab
     );
-  }
-
-  // Generates routes for different tabs in the Navigator
-  MaterialPageRoute _generateRoute(RouteSettings settings) {
-    WidgetBuilder builder;
-    switch (_selectedIndex) {
-      case 0:
-        // HomeScreen with injected AnimalService dependency
-        final animalService = AnimalService();
-        builder = (BuildContext _) => HomeScreen(animalService: animalService);
-        break;
-      case 1:
-        builder = (BuildContext _) => const SettingsScreen();
-        break;
-      case 2:
-        builder = (BuildContext _) => const ProfileScreen();
-        break;
-      default:
-        throw Exception("Invalid index");
-    }
-    return MaterialPageRoute(builder: builder, settings: settings);
   }
 }

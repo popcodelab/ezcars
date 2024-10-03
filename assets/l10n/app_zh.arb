@@ -11,6 +11,11 @@
   "@navProfile": {
     "description": "Label for the Profile navigation destination"
   },
+  "navSearch": "搜索",
+  "@navSearch": {
+    "description": "Label for the Search navigation destination"
+  }
+  ,
   "btnDetails": "细节",
   "languageLabel": "语言",
   "navDetails": "去详情",

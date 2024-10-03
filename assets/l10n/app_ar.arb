@@ -13,10 +13,15 @@
     "description": "Label for the Profile navigation destination"
   }
   ,
+  "navSearch": "يبحث",
+  "@navSearch": {
+    "description": "Label for the Search navigation destination"
+  }
+  ,
   "btnDetails": "تفاصيل",
   "languageLabel": "لغة",
   "navDetails": "انتقل إلى التفاصيل",
-  "@navProfile": {
+  "@navDetails": {
     "description": "Label for the Got to details button"
   },
   "showDetails": "عرض التفاصيل",

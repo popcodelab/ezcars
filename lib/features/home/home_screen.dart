@@ -33,15 +33,34 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Column(
               children: [
                 ListTile(
-                  leading: Image.asset(animal.imageUrl, width: 50, height: 50), // Change to Image.network if needed
+                  leading: ClipRRect(
+                    borderRadius: BorderRadius.circular(8),
+                    child: Image.asset(
+                      animal.imageUrl,
+                      width: 50,
+                      height: 50,
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) {
+                        // Fallback to a default image if the specified asset is missing
+                        return Image.asset(
+                          'assets/images/animals/default_animal.png', // Default image path
+                          width: 50,
+                          height: 50,
+                          fit: BoxFit.cover,
+                        );
+                      },
+                    ),
+                  ),
                   title: Text(animal.name),
                   subtitle: Text(
-                      '${AppLocalizations.of(context)!.location}: ${animal.latitude.toStringAsFixed(4)}, ${animal.longitude.toStringAsFixed(4)}'),
+                    '${AppLocalizations.of(context)!.location}: ${animal.latitude.toStringAsFixed(4)}, ${animal.longitude.toStringAsFixed(4)}',
+                  ),
                   trailing: ElevatedButton(
                     onPressed: () {
                       setState(() {
                         // Toggle details visibility
-                        _selectedAnimalIndex = (_selectedAnimalIndex == index) ? null : index;
+                        _selectedAnimalIndex =
+                            (_selectedAnimalIndex == index) ? null : index;
                       });
                     },
                     child: Text(
@@ -75,11 +94,23 @@ class AnimalDetails extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Image.asset(
-            animal.imageUrl,
-            height: 150,
-            width: double.infinity,
-            fit: BoxFit.cover,
+          ClipRRect(
+            borderRadius: BorderRadius.circular(8),
+            child: Image.asset(
+              animal.imageUrl,
+              height: 150,
+              width: double.infinity,
+              fit: BoxFit.cover,
+              errorBuilder: (context, error, stackTrace) {
+                // Fallback to a default image if the specified asset is missing
+                return Image.asset(
+                  'assets/images/animals/default_animal.png', // Default image path
+                  height: 150,
+                  width: double.infinity,
+                  fit: BoxFit.cover,
+                );
+              },
+            ),
           ),
           const SizedBox(height: 8.0),
           Text(
