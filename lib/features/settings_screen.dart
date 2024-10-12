@@ -1,8 +1,10 @@
+// lib/screens/settings_screen.dart
+
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 
-import '../main.dart';
+import '../providers/locale_provider.dart';
 import 'common/details_screen.dart';
 
 class SettingsScreen extends StatelessWidget {
@@ -22,11 +24,11 @@ class SettingsScreen extends StatelessWidget {
             child: Row(
               children: [
                 Text(
-                  "${AppLocalizations.of(context)!.languageLabel} ", // "Language : "
+                  "${AppLocalizations.of(context)!.languageLabel} ",
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
                 DropdownButton<Locale>(
-                  value: Provider.of<MyAppState>(context).locale,
+                  value: Provider.of<LocaleProvider>(context).locale,
                   items: const [
                     DropdownMenuItem(
                       value: Locale('en', 'US'),
@@ -59,8 +61,8 @@ class SettingsScreen extends StatelessWidget {
                   ],
                   onChanged: (Locale? newLocale) {
                     if (newLocale != null) {
-                      // Update the locale globally through MyAppState
-                      Provider.of<MyAppState>(context, listen: false).setLocale(newLocale);
+                      Provider.of<LocaleProvider>(context, listen: false)
+                          .setLocale(newLocale, context);
                     }
                   },
                 ),
@@ -72,7 +74,10 @@ class SettingsScreen extends StatelessWidget {
               child: ElevatedButton(
                 onPressed: () {
                   Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => const DetailsScreen(detail: "Settings Details")),
+                    MaterialPageRoute(
+                      builder: (context) =>
+                      const DetailsScreen(detail: "Settings Details"),
+                    ),
                   );
                 },
                 child: Text(AppLocalizations.of(context)!.navDetails),

@@ -1,9 +1,9 @@
-import 'package:ezcars/features/search/search_screen.dart';
+import 'features/search/search_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 
-import '../main.dart';
+import '../providers/locale_provider.dart';
 import 'features/home/home_screen.dart';
 import 'features/home/services/impl/animal_service.dart';
 import 'features/profile_screen.dart';
@@ -30,8 +30,8 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // Listen to MyAppState's locale to trigger rebuilds when the language changes
-    final locale = Provider.of<MyAppState>(context).locale;
+    // Use LocaleProvider to listen to changes in locale and rebuild when necessary
+    final locale = Provider.of<LocaleProvider>(context).locale;
 
     return Scaffold(
       // The body contains the screen corresponding to the selected index
