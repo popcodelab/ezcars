@@ -46,5 +46,9 @@
   "themeLabel": "theme",
   "@themeLabel": {
     "description": "Label for specifying application theme"
+  },
+  "languageResetLabel": "language reset to English (US)",
+  "@languageResetLabel": {
+    "description": "Label for  Language reset to English (US)"
   }
 }

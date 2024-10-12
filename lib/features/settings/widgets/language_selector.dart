@@ -31,28 +31,7 @@ class LanguageSelector extends StatelessWidget {
                   DropdownMenuItem(
                     value: Locale('fr'),
                     child: Text('French'), // French option
-                  ),
-                  DropdownMenuItem(
-                    value: Locale('th'),
-                    child: Text('Thai'), // Thai option
-                  ),
-                  DropdownMenuItem(
-                    value: Locale('ar'),
-                    child: Text('Arabic'), // Arabic option
-                  ),
-                  DropdownMenuItem(
-                    value: Locale.fromSubtags(
-                        languageCode: 'zh', countryCode: 'HK', scriptCode: 'Hant'),
-                    child: Text('Chinese (Hong Kong)'), // Chinese (HK) option
-                  ),
-                  DropdownMenuItem(
-                    value: Locale('ru', 'RU'),
-                    child: Text('Russian'), // Russian option
-                  ),
-                  DropdownMenuItem(
-                    value: Locale('ko'),
-                    child: Text('Korean'), // Korean option
-                  ),
+                  )
                 ],
                 onChanged: (Locale? newLocale) {
                   if (newLocale != null) {
@@ -76,13 +55,13 @@ class LanguageSelector extends StatelessWidget {
               // Reset language to English US
               Provider.of<LocaleProvider>(context, listen: false).resetLocale();
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Language reset to English (US)'),
-                  duration: Duration(seconds: 2),
+                SnackBar(
+                  content: Text('${AppLocalizations.of(context)!.languageResetLabel}: '),
+                  duration: const Duration(seconds: 2),
                 ),
               );
             },
-            child: const Text('Reset to Default (English)'), // Button label
+            child: Text('${AppLocalizations.of(context)!.languageResetLabel}: '), // Button label
           ),
         ],
       ),

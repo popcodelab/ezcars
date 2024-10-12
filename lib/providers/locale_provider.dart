@@ -10,11 +10,6 @@ class LocaleProvider extends ChangeNotifier {
   final List<Locale> supportedLocales = const [
     Locale('en', 'US'),
     Locale('fr'),
-    Locale('th'),
-    Locale('ar'),
-    Locale.fromSubtags(languageCode: 'zh', countryCode: 'HK', scriptCode: 'Hant'),
-    Locale('ru', 'RU'),
-    Locale('ko'),
   ];
 
   // Set a new locale and notify listeners
