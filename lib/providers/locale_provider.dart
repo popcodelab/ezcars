@@ -1,9 +1,9 @@
 // lib/providers/locale_provider.dart
-
 import 'package:flutter/material.dart';
 
 class LocaleProvider extends ChangeNotifier {
-  Locale _locale = const Locale('fr'); // Default locale is French
+  Locale _locale = const Locale('en', 'US'); // Default locale
+
   Locale get locale => _locale;
 
   // List of supported locales
@@ -14,48 +14,24 @@ class LocaleProvider extends ChangeNotifier {
     Locale('ar'),
     Locale.fromSubtags(languageCode: 'zh', countryCode: 'HK', scriptCode: 'Hant'),
     Locale('ru', 'RU'),
-    Locale('ko')
+    Locale('ko'),
   ];
 
-  // Method to set a new locale
-  void setLocale(Locale locale, BuildContext context) {
+  // Set a new locale and notify listeners
+  void setLocale(Locale locale) {
     if (_isSupportedLocale(locale)) {
-      if (_locale != locale) {
-        _locale = locale;
-        notifyListeners();
-        // Show a SnackBar to notify user of the language change
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Language changed to ${locale.toLanguageTag()}'),
-            duration: const Duration(seconds: 2),
-          ),
-        );
-      }
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Unsupported locale: ${locale.toLanguageTag()}. Defaulting to English (US).'),
-          duration: const Duration(seconds: 2),
-        ),
-      );
-      _locale = const Locale('en', 'US');
-      notifyListeners();
+      _locale = locale;
+      notifyListeners(); // Notify listeners when locale changes
     }
   }
 
-  // Method to reset to default locale
-  void resetLocale(BuildContext context) {
-    _locale = const Locale('en', 'US'); // Reset to default (English)
+  // Reset to default locale and notify listeners
+  void resetLocale() {
+    _locale = const Locale('en', 'US'); // Reset to English (US)
     notifyListeners();
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: const Text('Locale reset to English (US).'),
-        duration: const Duration(seconds: 2),
-      ),
-    );
   }
 
-  // Helper method to check if a locale is supported
+  // Check if the locale is supported
   bool _isSupportedLocale(Locale locale) {
     return supportedLocales.contains(locale);
   }

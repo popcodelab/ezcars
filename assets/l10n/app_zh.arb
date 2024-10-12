@@ -42,5 +42,9 @@
   "animalListTitle": "动物列表",
   "@animalListTitle": {
     "description": "Title for the Animal List screen"
+  },
+  "themeLabel": "主题",
+  "@themeLabel": {
+    "description": "Label for specifying application theme"
   }
 }

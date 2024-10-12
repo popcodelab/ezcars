@@ -43,8 +43,13 @@
   "longitude": "خط الطول",
   "@longitude": {
     "description": "Label for specifying longitude coordinate"
-  }, "animalListTitle": "قائمة الحيوانات",
+  },
+  "animalListTitle": "قائمة الحيوانات",
   "@animalListTitle": {
     "description": "Title for the Animal List screen"
-  }
+  },
+   "themeLabel": "موضوع",
+   "@themeLabel": {
+     "description": "Label for specifying application theme"
+   }
 }

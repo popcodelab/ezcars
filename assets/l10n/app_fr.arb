@@ -42,5 +42,9 @@
   "animalListTitle": "Liste des animaux",
   "@animalListTitle": {
     "description": "Title for the Animal List screen"
-  }
+  },
+  "themeLabel": "theme",
+  "@themeLabel": {
+     "description": "Label for specifying application theme"
+   }
 }
