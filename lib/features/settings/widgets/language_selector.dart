@@ -1,3 +1,4 @@
+import 'package:ezcars/extensions/string_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -18,7 +19,7 @@ class LanguageSelector extends StatelessWidget {
           Row(
             children: [
               Text(
-                '${AppLocalizations.of(context)!.languageLabel}: ', // Localized "Language"
+                '${AppLocalizations.of(context)!.languageLabel.capitalize()}: ', // Localized "Language"
                 style: const TextStyle(fontSize: 18),
               ),
               DropdownButton<Locale>(
@@ -39,7 +40,7 @@ class LanguageSelector extends StatelessWidget {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content: Text(
-                          'Language changed to ${newLocale.toLanguageTag()}',
+                          '${AppLocalizations.of(context)!.languageChangedToLabel.capitalize()} ${newLocale.toLanguageTag()}'.capitalize(),
                         ),
                         duration: const Duration(seconds: 2),
                       ),
@@ -56,12 +57,12 @@ class LanguageSelector extends StatelessWidget {
               Provider.of<LocaleProvider>(context, listen: false).resetLocale();
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
-                  content: Text('${AppLocalizations.of(context)!.languageResetLabel}: '),
+                  content: Text('${AppLocalizations.of(context)!.languageResetLabel.capitalize()}: '),
                   duration: const Duration(seconds: 2),
                 ),
               );
             },
-            child: Text('${AppLocalizations.of(context)!.languageResetLabel}: '), // Button label
+            child: Text('${AppLocalizations.of(context)!.languageResetLabel.capitalize()}: '), // Button label
           ),
         ],
       ),
