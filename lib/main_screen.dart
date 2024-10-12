@@ -7,7 +7,7 @@ import '../providers/locale_provider.dart';
 import 'features/home/home_screen.dart';
 import 'features/home/services/impl/animal_service.dart';
 import 'features/profile_screen.dart';
-import 'features/settings_screen.dart';
+import 'features/settings/settings_screen.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
