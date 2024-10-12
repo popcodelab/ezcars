@@ -1,3 +1,4 @@
+import 'package:ezcars/extensions/string_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -19,23 +20,25 @@ class ThemeSelector extends StatelessWidget {
             children: [
               // Localized theme label
               Text(
-                '${AppLocalizations.of(context)!.themeLabel}: ', // Localized "Theme"
+                '${AppLocalizations.of(context)!.themeLabel.capitalize()}: ', // Localized "Theme"
                 style: const TextStyle(fontSize: 18),
               ),
               DropdownButton<ThemeMode>(
                 value: Provider.of<ThemeProvider>(context).themeMode, // Current theme mode
-                items: const [
-                  DropdownMenuItem(
+                items: [
+                  const DropdownMenuItem(
                     value: ThemeMode.light,
                     child: Text('Light'), // Light theme option
                   ),
-                  DropdownMenuItem(
+                  const DropdownMenuItem(
                     value: ThemeMode.dark,
                     child: Text('Dark'), // Dark theme option
                   ),
                   DropdownMenuItem(
                     value: ThemeMode.system,
-                    child: Text('System Default'), // System default option
+                    child: Text(
+                      AppLocalizations.of(context)!.systemDefaultLabel.capitalize(), // System default option with localized text
+                    ),
                   ),
                 ],
                 onChanged: (ThemeMode? newTheme) {
@@ -44,7 +47,7 @@ class ThemeSelector extends StatelessWidget {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content: Text(
-                          'Theme changed to ${newTheme.toString().split('.').last}',
+                          '${AppLocalizations.of(context)!.themeChangedToLabel.capitalize()} ${newTheme.toString().split('.').last}',
                         ),
                         duration: const Duration(seconds: 2),
                       ),
@@ -60,13 +63,13 @@ class ThemeSelector extends StatelessWidget {
               // Reset theme to system default
               Provider.of<ThemeProvider>(context, listen: false).resetTheme();
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Theme reset to System Default'),
-                  duration: Duration(seconds: 2),
+                SnackBar(
+                  content: Text(AppLocalizations.of(context)!.themeResetDefaultLabel.capitalize()),
+                  duration: const Duration(seconds: 2),
                 ),
               );
             },
-            child: const Text('Reset to System Default Theme'), // Button label
+            child: Text(AppLocalizations.of(context)!.resetToDefaultThemeLabel.capitalize()), // Button label
           ),
         ],
       ),

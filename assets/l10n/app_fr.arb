@@ -27,24 +27,48 @@
   "@hideDetails": {
     "description": "Button label to hide details"
   },
-  "location": "Emplacement",
+  "location": "emplacement",
   "@location": {
     "description": "Label for specifying a place"
   },
-  "latitude": "Latitude",
+  "latitude": "latitude",
   "@latitude": {
     "description": "Label for specifying latitude coordinate"
   },
-  "longitude": "Longitude",
+  "longitude": "longitude",
   "@longitude": {
     "description": "Label for specifying longitude coordinate"
   },
-  "animalListTitle": "Liste des animaux",
+  "animalListTitle": "liste des animaux",
   "@animalListTitle": {
     "description": "Title for the Animal List screen"
   },
-  "themeLabel": "theme",
+  "themeLabel": "thème",
   "@themeLabel": {
      "description": "Label for specifying application theme"
-   }
+   },
+  "languageResetLabel": "langue réinitialisée en anglais (États-Unis)",
+  "@languageResetLabel": {
+    "description": "Label for  Language reset to English (US)"
+  },
+  "languageChangedToLabel": "Langue passée en ",
+  "@languageChangedToLabel": {
+    "description": "Label for  Language changed to"
+  },
+  "systemDefaultLabel": "thème par défaut du système",
+  "@systemDefaultLabel": {
+    "description": "Label for  system default"
+  },
+  "themeChangedToLabel": "Theme par défaut appliqué",
+  "@themeChangedToLabel": {
+    "description": "Label for  theme changed to"
+  },
+  "themeResetDefaultLabel": "Thème par défaut du système)'",
+  "@themeResetDefaultLabel": {
+    "description": "Label for  Theme reset to System Default'"
+  },
+  "resetToDefaultThemeLabel": "retour au thème par défaut'",
+  "@resetToDefaultThemeLabel": {
+    "description": "Label for  Reset to System Default Theme'"
+  }
 }

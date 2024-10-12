@@ -1,3 +1,4 @@
+import 'package:ezcars/extensions/string_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -18,7 +19,7 @@ class LanguageSelector extends StatelessWidget {
           Row(
             children: [
               Text(
-                '${AppLocalizations.of(context)!.languageLabel}: ', // Localized "Language"
+                '${AppLocalizations.of(context)!.languageLabel.capitalize()}: ', // Localized "Language"
                 style: const TextStyle(fontSize: 18),
               ),
               DropdownButton<Locale>(
@@ -31,28 +32,7 @@ class LanguageSelector extends StatelessWidget {
                   DropdownMenuItem(
                     value: Locale('fr'),
                     child: Text('French'), // French option
-                  ),
-                  DropdownMenuItem(
-                    value: Locale('th'),
-                    child: Text('Thai'), // Thai option
-                  ),
-                  DropdownMenuItem(
-                    value: Locale('ar'),
-                    child: Text('Arabic'), // Arabic option
-                  ),
-                  DropdownMenuItem(
-                    value: Locale.fromSubtags(
-                        languageCode: 'zh', countryCode: 'HK', scriptCode: 'Hant'),
-                    child: Text('Chinese (Hong Kong)'), // Chinese (HK) option
-                  ),
-                  DropdownMenuItem(
-                    value: Locale('ru', 'RU'),
-                    child: Text('Russian'), // Russian option
-                  ),
-                  DropdownMenuItem(
-                    value: Locale('ko'),
-                    child: Text('Korean'), // Korean option
-                  ),
+                  )
                 ],
                 onChanged: (Locale? newLocale) {
                   if (newLocale != null) {
@@ -60,7 +40,7 @@ class LanguageSelector extends StatelessWidget {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content: Text(
-                          'Language changed to ${newLocale.toLanguageTag()}',
+                          '${AppLocalizations.of(context)!.languageChangedToLabel.capitalize()} ${newLocale.toLanguageTag()}'.capitalize(),
                         ),
                         duration: const Duration(seconds: 2),
                       ),
@@ -76,13 +56,13 @@ class LanguageSelector extends StatelessWidget {
               // Reset language to English US
               Provider.of<LocaleProvider>(context, listen: false).resetLocale();
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Language reset to English (US)'),
-                  duration: Duration(seconds: 2),
+                SnackBar(
+                  content: Text('${AppLocalizations.of(context)!.languageResetLabel.capitalize()}: '),
+                  duration: const Duration(seconds: 2),
                 ),
               );
             },
-            child: const Text('Reset to Default (English)'), // Button label
+            child: Text('${AppLocalizations.of(context)!.languageResetLabel.capitalize()}: '), // Button label
           ),
         ],
       ),
