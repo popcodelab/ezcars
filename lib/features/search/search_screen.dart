@@ -9,10 +9,12 @@ import 'services/i_car_service.dart';
 import 'services/i_location_service.dart';
 import 'services/i_map_circle_label_service.dart';
 import 'services/i_map_circle_service.dart';
+import 'services/i_map_transparent_circle_service.dart';
 import 'services/impl/car_service.dart';
 import 'services/impl/location_service.dart';
 import 'services/impl/map_circle_label_service.dart';
 import 'services/impl/map_lines_circle_service.dart';
+import 'services/impl/map_transparent_circle_service.dart';
 import 'widgets/car_list_widget.dart';
 
 /// Screen that displays the user's location on a Google Map,
@@ -38,10 +40,10 @@ class _SearchScreenState extends State<SearchScreen> {
   final ICarService _carService = CarService();
   final ILocationService _locationService = LocationService();
   final IMapCircleLabelService _mapCircleLabelService = MapCircleLabelService();
-  final IMapCircleService _circlesService = MapLinesCircleService();
+  final IMapTransparentCircleService _circlesService = MapTransparentCircleService(); // Transparent circle service for drawing circles on the map
 
   List<Car> cars = []; // List to store car data
-  Set<Polyline> polylines = {}; // Set to store walking radius lines
+  Set<Circle> boundsCircle = {}; // Set to store transparent circle objects
   Set<Marker> markers = {}; // Set to store map markers
   List<Car> visibleCars = []; // List to store only the cars that are visible on the map
 
@@ -95,7 +97,7 @@ class _SearchScreenState extends State<SearchScreen> {
           _loadingLocation = false;
 
           // Create initial polylines with the given zoom level
-          _updatePolylines(mapZoomLevel);
+          _updateCircles(mapZoomLevel);
         });
 
         // Animate to the user's location
@@ -117,23 +119,18 @@ class _SearchScreenState extends State<SearchScreen> {
     }
   }
 
-  /// Updates polylines around the user's current location based on the zoom level.
-  void _updatePolylines(double zoomLevel) {
-    // Adjust line thickness based on zoom level.
-    double lineThickness = zoomLevel * 0.5;
-
-    if (_currentLatLng != null) {
-      setState(() {
-        polylines = _circlesService.createCircleWithLines(
-          center: _currentLatLng!,
-          radiusInMeters: walkingRadius,
-          gapBetweenLines: 100.0,
-          lineLength: 50.0,
-          lineThickness: lineThickness,
-          lineColor: Colors.green,
-        );
-      });
-    }
+  /// Updates transparent circles around the user's current location based on zoom level.
+  void _updateCircles(double zoomLevel) {
+    setState(() {
+      boundsCircle = _circlesService.createTransparentCircle(
+        center: _currentLatLng!, // Center the circle on user's location
+        radiusInMeters: walkingRadius, // Walking radius in meters
+        opacity: 0.4, // Circle opacity (40% transparent)
+        fillColor: Colors.green, // Fill color for the circle
+        strokeWidth: 2, // Stroke width for the circle border
+        strokeColor: Colors.greenAccent, // Border color for the circle
+      );
+    });
   }
 
   /// Filters the cars based on the current visible region of the map.
@@ -244,7 +241,7 @@ class _SearchScreenState extends State<SearchScreen> {
                     });
                   },
                   onCameraIdle: _filterVisibleCars,
-                  polylines: polylines,
+                  circles: boundsCircle, // Display transparent circles around user's location
                   markers: markers,
                   myLocationEnabled: true,
                   myLocationButtonEnabled: true,
