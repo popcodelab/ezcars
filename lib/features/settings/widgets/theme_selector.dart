@@ -20,7 +20,7 @@ class ThemeSelector extends StatelessWidget {
             children: [
               // Localized theme label
               Text(
-                '${AppLocalizations.of(context)!.themeLabel.capitalize()}: ', // Localized "Theme"
+                '${AppLocalizations.of(context)!.theme.capitalize()}: ', // Localized "Theme"
                 style: const TextStyle(fontSize: 18),
               ),
               DropdownButton<ThemeMode>(
@@ -37,7 +37,7 @@ class ThemeSelector extends StatelessWidget {
                   DropdownMenuItem(
                     value: ThemeMode.system,
                     child: Text(
-                      AppLocalizations.of(context)!.systemDefaultLabel.capitalize(), // System default option with localized text
+                      AppLocalizations.of(context)!.system_default.capitalize(), // System default option with localized text
                     ),
                   ),
                 ],
@@ -47,7 +47,7 @@ class ThemeSelector extends StatelessWidget {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content: Text(
-                          '${AppLocalizations.of(context)!.themeChangedToLabel.capitalize()} ${newTheme.toString().split('.').last}',
+                          '${AppLocalizations.of(context)!.theme_changed_to.capitalize()} ${newTheme.toString().split('.').last}',
                         ),
                         duration: const Duration(seconds: 2),
                       ),
@@ -64,12 +64,12 @@ class ThemeSelector extends StatelessWidget {
               Provider.of<ThemeProvider>(context, listen: false).resetTheme();
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
-                  content: Text(AppLocalizations.of(context)!.themeResetDefaultLabel.capitalize()),
+                  content: Text(AppLocalizations.of(context)!.theme_reset_default.capitalize()),
                   duration: const Duration(seconds: 2),
                 ),
               );
             },
-            child: Text(AppLocalizations.of(context)!.resetToDefaultThemeLabel.capitalize()), // Button label
+            child: Text(AppLocalizations.of(context)!.reset_default_theme.capitalize()), // Button label
           ),
         ],
       ),

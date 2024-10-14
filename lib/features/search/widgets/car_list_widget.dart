@@ -1,7 +1,10 @@
+import 'package:ezcars/extensions/string_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../models/car.dart';
+
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CarListWidget extends StatelessWidget {
   final List<Car> cars;
@@ -33,8 +36,16 @@ class CarListWidget extends StatelessWidget {
 
     if (cars.isEmpty) {
       // Show message if no cars are available
-      return const Center(
-        child: Text("No cars available at the moment.", style: TextStyle(fontSize: 16)),
+      return Container(
+        height: 20, // Set a specific height for the container
+        color: Colors.white.withOpacity(0.8), // Set background color with 80% opacity
+        child: Center(
+          child: Text(
+            AppLocalizations.of(context)!.no_cars_available.capitalize(),
+            style: const TextStyle(fontSize: 14),
+            textAlign: TextAlign.center, // Center align the text
+          ),
+        ),
       );
     }
 
@@ -62,7 +73,12 @@ class CarListWidget extends StatelessWidget {
                         topLeft: Radius.circular(15.0),
                         topRight: Radius.circular(15.0),
                       ),
-                      child: _buildCarImage(cars[index].image),
+                      child: Image.asset(
+                        cars[index].image,
+                        fit: BoxFit.cover,
+                        width: double.infinity,
+                        height: 150,
+                      ),
                     ),
                   ),
                   Padding(
@@ -87,24 +103,6 @@ class CarListWidget extends StatelessWidget {
               ),
             ),
           ),
-        );
-      },
-    );
-  }
-
-  /// Builds the car image widget, handling missing images by using a default placeholder.
-  Widget _buildCarImage(String imagePath) {
-    return Image.asset(
-      imagePath,
-      fit: BoxFit.cover,
-      width: double.infinity,
-      height: 150,
-      errorBuilder: (context, error, stackTrace) {
-        return Image.asset(
-          'assets/images/default_car.png', // Path to default image
-          fit: BoxFit.cover,
-          width: double.infinity,
-          height: 150,
         );
       },
     );

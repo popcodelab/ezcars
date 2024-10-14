@@ -30,8 +30,6 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // Use LocaleProvider to listen to changes in locale and rebuild when necessary
-    final locale = Provider.of<LocaleProvider>(context).locale;
 
     return Scaffold(
       // The body contains the screen corresponding to the selected index
@@ -59,19 +57,19 @@ class _MainScreenState extends State<MainScreen> {
       items: [
         _buildBottomNavigationBarItem(
           icon: Icons.home,
-          label: AppLocalizations.of(context)?.navHome ?? 'Home', // Fallback to 'Home' if localization fails
+          label: AppLocalizations.of(context)?.nav_home ?? 'Home', // Fallback to 'Home' if localization fails
         ),
         _buildBottomNavigationBarItem(
           icon: Icons.search,
-          label: AppLocalizations.of(context)?.navSearch ?? 'Search', // Fallback to 'Search' if localization fails
+          label: AppLocalizations.of(context)?.nav_search ?? 'Search', // Fallback to 'Search' if localization fails
         ),
         _buildBottomNavigationBarItem(
           icon: Icons.settings,
-          label: AppLocalizations.of(context)?.navSettings ?? 'Settings', // Fallback to 'Settings' if localization fails
+          label: AppLocalizations.of(context)?.nav_settings ?? 'Settings', // Fallback to 'Settings' if localization fails
         ),
         _buildBottomNavigationBarItem(
           icon: Icons.person,
-          label: AppLocalizations.of(context)?.navProfile ?? 'Profile', // Fallback to 'Profile' if localization fails
+          label: AppLocalizations.of(context)?.nav_profile ?? 'Profile', // Fallback to 'Profile' if localization fails
         ),
       ],
     );

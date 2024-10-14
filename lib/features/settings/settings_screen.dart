@@ -12,7 +12,7 @@ class SettingsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.navSettings), // Localized title
+        title: Text(AppLocalizations.of(context)!.nav_settings), // Localized title
       ),
       body: const Column(
         crossAxisAlignment: CrossAxisAlignment.start,

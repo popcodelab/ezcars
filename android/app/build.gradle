@@ -5,6 +5,10 @@ plugins {
     id "dev.flutter.flutter-gradle-plugin"
 }
 
+def localProperties = new Properties()
+def localPropertiesFile = rootProject.file('local.properties')
+localProperties.load(new FileInputStream(localPropertiesFile))
+
 android {
     namespace = "com.example.ezcars"
     compileSdk = flutter.compileSdkVersion
@@ -28,7 +32,10 @@ android {
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
+        resValue "string", "google_maps_api_key", localProperties.getProperty("GOOGLE_MAPS_API_KEY")
     }
+
+
 
     buildTypes {
         release {

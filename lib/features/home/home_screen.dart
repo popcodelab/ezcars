@@ -31,7 +31,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(localizations.animalListTitle), // Set the title from localizations
+        title: Text(localizations.animal_list), // Set the title from localizations
       ),
       body: ListView.builder(
         itemCount: animals.length, // The number of items is the length of the animals list
@@ -72,7 +72,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     },
                     child: Text(
                       _selectedAnimalIndex == index
-                          ? localizations.hideDetails // Show 'Hide Details' if the details are visible
+                          ? localizations.hide_details // Show 'Hide Details' if the details are visible
                           : localizations.showDetails, // Show 'Show Details' if the details are hidden
                     ),
                   ),
