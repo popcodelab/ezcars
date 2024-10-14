@@ -84,9 +84,9 @@
   "@error_fetching_location": {
     "description": "Error message for fetching location failure.'"
   },
-  "error_fetching_cars": "Error fetching cars. Please try again.'",
+  "error_fetching_cars": "Error fetching vehicules. Please try again.'",
   "@error_fetching_cars": {
-    "description": "Error message for fetching cars failure.'"
+    "description": "Error message for fetching vehicules failure.'"
   },
   "current_location": "current location",
   "@current_location": {
@@ -116,8 +116,8 @@
   "@error_fetching_place_details": {
     "description": "Error message for fetching place details failure.'"
   },
-  "no_cars_available": "no cars available at the moment.'",
+  "no_cars_available": "no vehicules available at the moment.'",
   "@no_cars_available": {
-    "description": "Message for no cars available at the moment.'"
+    "description": "Message for no vehicules available at the moment.'"
   }
 }

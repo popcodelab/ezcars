@@ -2,18 +2,18 @@ import 'package:ezcars/extensions/string_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-import '../models/car.dart';
+import '../models/vehicule.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class CarListWidget extends StatelessWidget {
-  final List<Car> cars;
+class VehiculesListWidget extends StatelessWidget {
+  final List<Vehicule> vehicules;
   final bool isLoading;
   final Function(LatLng) onCarTap;
 
-  const CarListWidget({
+  const VehiculesListWidget({
     super.key,
-    required this.cars,
+    required this.vehicules,
     required this.isLoading,
     required this.onCarTap,
   });
@@ -21,21 +21,21 @@ class CarListWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (isLoading) {
-      // Show loading indicator if cars are still being fetched
+      // Show loading indicator if vehicules are still being fetched
       return const Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             CircularProgressIndicator(),
             SizedBox(height: 10),
-            Text("Loading available cars..."),
+            Text("Loading available vehicules..."),
           ],
         ),
       );
     }
 
-    if (cars.isEmpty) {
-      // Show message if no cars are available
+    if (vehicules.isEmpty) {
+      // Show message if no vehicules are available
       return Container(
         height: 20, // Set a specific height for the container
         color: Colors.white.withOpacity(0.8), // Set background color with 80% opacity
@@ -49,14 +49,14 @@ class CarListWidget extends StatelessWidget {
       );
     }
 
-    // Display car cards as horizontal list
+    // Display vehicule cards as horizontal list
     return ListView.builder(
       scrollDirection: Axis.horizontal,
-      itemCount: cars.length,
+      itemCount: vehicules.length,
       itemBuilder: (context, index) {
         return GestureDetector(
           onTap: () {
-            onCarTap(LatLng(cars[index].lat, cars[index].lng)); // Call the function passed from parent
+            onCarTap(LatLng(vehicules[index].lat, vehicules[index].lng)); // Call the function passed from parent
           },
           child: Container(
             width: 250,
@@ -74,7 +74,7 @@ class CarListWidget extends StatelessWidget {
                         topRight: Radius.circular(15.0),
                       ),
                       child: Image.asset(
-                        cars[index].image,
+                        vehicules[index].image,
                         fit: BoxFit.cover,
                         width: double.infinity,
                         height: 150,
@@ -87,15 +87,15 @@ class CarListWidget extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          cars[index].name,
+                          vehicules[index].name,
                           style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                         ),
                         const SizedBox(height: 5),
-                        Text(cars[index].price),
+                        Text(vehicules[index].price),
                         const SizedBox(height: 5),
-                        Text(cars[index].location),
+                        Text(vehicules[index].location),
                         const SizedBox(height: 5),
-                        Text(cars[index].distance),
+                        Text(vehicules[index].distance),
                       ],
                     ),
                   ),

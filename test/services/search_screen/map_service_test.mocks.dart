@@ -6,7 +6,7 @@
 import 'dart:async' as _i3;
 import 'dart:typed_data' as _i7;
 
-import 'package:ezcars/features/search/models/car.dart' as _i4;
+import 'package:ezcars/features/search/models/vehicule.dart' as _i4;
 import 'package:ezcars/features/search/providers/rental_period_provider.dart'
     as _i6;
 import 'package:ezcars/features/search/services/i_map_service.dart' as _i2;
@@ -35,13 +35,13 @@ class MockIMapService extends _i1.Mock implements _i2.IMapService {
   }
 
   @override
-  _i3.Future<List<_i4.Car>> fetchCars() => (super.noSuchMethod(
+  _i3.Future<List<_i4.Vehicule>> fetchVehicules() => (super.noSuchMethod(
         Invocation.method(
           #fetchCars,
           [],
         ),
-        returnValue: _i3.Future<List<_i4.Car>>.value(<_i4.Car>[]),
-      ) as _i3.Future<List<_i4.Car>>);
+        returnValue: _i3.Future<List<_i4.Vehicule>>.value(<_i4.Vehicule>[]),
+      ) as _i3.Future<List<_i4.Vehicule>>);
 
   @override
   _i3.Future<_i5.LatLng?> fetchUserLocation() => (super.noSuchMethod(
@@ -71,8 +71,8 @@ class MockIMapService extends _i1.Mock implements _i2.IMapService {
       ) as Set<_i5.Circle>);
 
   @override
-  List<_i4.Car> filterVisibleCars(
-    List<_i4.Car>? cars,
+  List<_i4.Vehicule> filterVisibleVehicules(
+    List<_i4.Vehicule>? vehicules,
     _i5.LatLngBounds? bounds,
     _i6.RentalPeriodProvider? rentalPeriodState,
   ) =>
@@ -80,24 +80,24 @@ class MockIMapService extends _i1.Mock implements _i2.IMapService {
         Invocation.method(
           #filterVisibleCars,
           [
-            cars,
+            vehicules,
             bounds,
             rentalPeriodState,
           ],
         ),
-        returnValue: <_i4.Car>[],
-      ) as List<_i4.Car>);
+        returnValue: <_i4.Vehicule>[],
+      ) as List<_i4.Vehicule>);
 
   @override
-  bool isCarWithinBounds(
-    _i4.Car? car,
+  bool isVehiculeWithinBounds(
+    _i4.Vehicule? vehicule,
     _i5.LatLngBounds? bounds,
   ) =>
       (super.noSuchMethod(
         Invocation.method(
           #isCarWithinBounds,
           [
-            car,
+            vehicule,
             bounds,
           ],
         ),
@@ -105,15 +105,15 @@ class MockIMapService extends _i1.Mock implements _i2.IMapService {
       ) as bool);
 
   @override
-  bool isCarAvailableDuringRentalPeriod(
-    _i4.Car? car,
+  bool isVehiculeAvailableDuringRentalPeriod(
+    _i4.Vehicule? vehicule,
     _i6.RentalPeriodProvider? rentalPeriodState,
   ) =>
       (super.noSuchMethod(
         Invocation.method(
           #isCarAvailableDuringRentalPeriod,
           [
-            car,
+            vehicule,
             rentalPeriodState,
           ],
         ),

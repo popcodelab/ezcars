@@ -1,6 +1,6 @@
 import 'unavailability_period.dart';
-// Defines a car
-class Car {
+
+base class Vehicule {
   final String name;
   final String image;
   final String price;
@@ -10,7 +10,7 @@ class Car {
   final double lng;
   final List<UnavailabilityPeriod> unavailabilityPeriods;
 
-  Car({
+  Vehicule({
     required this.name,
     required this.image,
     required this.price,
@@ -21,4 +21,3 @@ class Car {
     this.unavailabilityPeriods = const [], // Default to empty list
   });
 }
-

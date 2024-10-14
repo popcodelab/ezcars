@@ -1,4 +1,4 @@
-import 'package:ezcars/features/search/models/car.dart';
+import 'package:ezcars/features/search/models/vehicule.dart';
 import 'package:ezcars/features/search/models/unavailability_period.dart';
 import 'package:ezcars/features/search/providers/rental_period_provider.dart';
 import 'package:ezcars/features/search/services/i_map_service.dart';
@@ -23,14 +23,14 @@ void main() {
 
   group('MapService Tests', () {
 
-    /// Test: isCarWithinBounds checks whether a car is within map bounds
-    test('isCarWithinBounds identifies if a car is inside bounds', () {
-      // Arrange: Define map bounds and a car within those bounds
+    /// Test: isCarWithinBounds checks whether a vehicule is within map bounds
+    test('isCarWithinBounds identifies if a vehicule is inside bounds', () {
+      // Arrange: Define map bounds and a vehicule within those bounds
       final bounds = LatLngBounds(
         southwest: LatLng(34.0, -119.0), // Bottom-left corner
         northeast: LatLng(35.0, -117.0), // Top-right corner
       );
-      final car = Car(
+      final vehicule = Vehicule(
         name: 'Tesla Model 3',
         image: 'image_url',
         price: '\$100/day',
@@ -40,26 +40,26 @@ void main() {
         lng: -118.0, // Inside bounds
       );
 
-      // Stub the isCarWithinBounds method to return true for cars within bounds
-      when(mockMapService.isCarWithinBounds(any, any)).thenAnswer((invocation) {
-        final Car car = invocation.positionalArguments[0];
+      // Stub the isCarWithinBounds method to return true for vehicules within bounds
+      when(mockMapService.isVehiculeWithinBounds(any, any)).thenAnswer((invocation) {
+        final Vehicule vehicule = invocation.positionalArguments[0];
         final LatLngBounds bounds = invocation.positionalArguments[1];
-        return car.lat >= bounds.southwest.latitude &&
-            car.lat <= bounds.northeast.latitude &&
-            car.lng >= bounds.southwest.longitude &&
-            car.lng <= bounds.northeast.longitude;
+        return vehicule.lat >= bounds.southwest.latitude &&
+            vehicule.lat <= bounds.northeast.latitude &&
+            vehicule.lng >= bounds.southwest.longitude &&
+            vehicule.lng <= bounds.northeast.longitude;
       });
 
       // Act: Call the isCarWithinBounds method
-      final isWithinBounds = mockMapService.isCarWithinBounds(car, bounds);
+      final isWithinBounds = mockMapService.isVehiculeWithinBounds(vehicule, bounds);
 
-      // Assert: Ensure the car is identified as being inside the bounds
+      // Assert: Ensure the vehicule is identified as being inside the bounds
       expect(isWithinBounds, true);
     });
 
-    /// Test: isCarAvailableDuringRentalPeriod verifies if a car is available during the rental period
-    test('isCarAvailableDuringRentalPeriod returns true if car is available', () {
-      // Arrange: Define unavailability period for the car
+    /// Test: isCarAvailableDuringRentalPeriod verifies if a vehicule is available during the rental period
+    test('isCarAvailableDuringRentalPeriod returns true if vehicule is available', () {
+      // Arrange: Define unavailability period for the vehicule
       final unavailabilityPeriod = UnavailabilityPeriod(
         startDate: DateTime(2024, 10, 15),
         startTime: const TimeOfDay(hour: 10, minute: 0),
@@ -67,7 +67,7 @@ void main() {
         endTime: const TimeOfDay(hour: 18, minute: 0),
       );
 
-      final car = Car(
+      final vehicule = Vehicule(
         name: 'Tesla Model S',
         image: 'image_url',
         price: '\$150/day',
@@ -78,7 +78,7 @@ void main() {
         unavailabilityPeriods: [unavailabilityPeriod],
       );
 
-      // Set rental period that doesn't overlap with the car's unavailability
+      // Set rental period that doesn't overlap with the vehicule's unavailability
       rentalPeriodProvider.updateDates(
         startDate: DateTime(2024, 10, 10),
         endDate: DateTime(2024, 10, 14),
@@ -87,24 +87,24 @@ void main() {
       );
 
       // Stub the isCarAvailableDuringRentalPeriod method
-      when(mockMapService.isCarAvailableDuringRentalPeriod(any, any)).thenAnswer((invocation) {
-        final Car car = invocation.positionalArguments[0];
+      when(mockMapService.isVehiculeAvailableDuringRentalPeriod(any, any)).thenAnswer((invocation) {
+        final Vehicule vehicule = invocation.positionalArguments[0];
         final RentalPeriodProvider rentalPeriod = invocation.positionalArguments[1];
         final DateTime? startDate = rentalPeriod.startDate;
         final DateTime? endDate = rentalPeriod.endDate;
 
-        // Check if the car is available during the selected rental period
-        return car.unavailabilityPeriods.every((period) {
+        // Check if the vehicule is available during the selected rental period
+        return vehicule.unavailabilityPeriods.every((period) {
           return startDate == null ||
               endDate == null ||
               (startDate.isAfter(period.endDate) || endDate.isBefore(period.startDate));
         });
       });
 
-      // Act: Check if the car is available during the rental period
-      final isAvailable = mockMapService.isCarAvailableDuringRentalPeriod(car, rentalPeriodProvider);
+      // Act: Check if the vehicule is available during the rental period
+      final isAvailable = mockMapService.isVehiculeAvailableDuringRentalPeriod(vehicule, rentalPeriodProvider);
 
-      // Assert: Ensure the car is available for the rental period
+      // Assert: Ensure the vehicule is available for the rental period
       expect(isAvailable, true);
     });
 

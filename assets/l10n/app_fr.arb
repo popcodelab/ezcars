@@ -89,7 +89,7 @@
   },
   "error_fetching_cars": "Erreur lors de la récupération des véhicules. Veuillez réessayer.'",
   "@error_fetching_cars": {
-    "description": "Error message for fetching cars failure.'"
+    "description": "Error message for fetching vehicules failure.'"
   },
   "current_location": "position actuelle",
   "@current_location": {
@@ -121,6 +121,6 @@
   },
   "no_cars_available": "aucun véhicule  disponible pour le moment.'",
   "@no_cars_available": {
-    "description": "Message for no cars available at the moment.'"
+    "description": "Message for no vehicules available at the moment.'"
   }
 }
