@@ -6,9 +6,10 @@
         android:label="ezcars"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
-       
-        <meta-data android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyD4r1cDZEOp4fgZw1VRwKtRE30hV8S1Q2w" />
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_api_key" />
         
         <activity
             android:name=".MainActivity"

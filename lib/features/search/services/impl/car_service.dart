@@ -1,4 +1,7 @@
+import 'package:flutter/material.dart';
+
 import '../../models/car.dart';
+import '../../models/unavailability_period.dart';
 import '../i_car_service.dart';
 
 /// Service that provides a list of available cars for rental.
@@ -41,6 +44,14 @@ class CarService implements ICarService {
         distance: '3.2 miles',
         lat: 12.9122285,
         lng: 100.8640967,
+        unavailabilityPeriods: [
+          UnavailabilityPeriod(
+            startDate: DateTime(2024, 11, 1),
+            startTime: const TimeOfDay(hour: 10, minute: 0),
+            endDate: DateTime(2024, 11, 10),
+            endTime: const TimeOfDay(hour: 18, minute: 0),
+          ),
+        ],
       ),
       Car(
         name: 'Mercedes G63',
@@ -59,6 +70,14 @@ class CarService implements ICarService {
         distance: '3.2 miles',
         lat: 37.4519983,
         lng: -122.1234,
+        unavailabilityPeriods: [
+          UnavailabilityPeriod(
+            startDate: DateTime(2024, 11, 1),
+            startTime: const TimeOfDay(hour: 10, minute: 0),
+            endDate: DateTime(2024, 11, 10),
+            endTime: const TimeOfDay(hour: 18, minute: 0),
+          ),
+        ],
       ),
       Car(
         name: 'MG 5',
@@ -68,6 +87,20 @@ class CarService implements ICarService {
         distance: '3.2 miles',
         lat: 37.4219983,
         lng: -122.084,
+        unavailabilityPeriods: [
+          UnavailabilityPeriod(
+            startDate: DateTime(2024, 10, 15),
+            startTime: const TimeOfDay(hour: 8, minute: 0),
+            endDate: DateTime(2024, 10, 20),
+            endTime: const TimeOfDay(hour: 18, minute: 0),
+          ),
+          UnavailabilityPeriod(
+            startDate: DateTime(2024, 10, 25),
+            startTime: const TimeOfDay(hour: 9, minute: 0),
+            endDate: DateTime(2024, 10, 30),
+            endTime: const TimeOfDay(hour: 17, minute: 0),
+          ),
+        ],
       ),
     ];
   }

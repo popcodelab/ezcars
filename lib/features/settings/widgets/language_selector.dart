@@ -40,7 +40,7 @@ class LanguageSelector extends StatelessWidget {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content: Text(
-                          '${AppLocalizations.of(context)!.languageChangedToLabel.capitalize()} ${newLocale.toLanguageTag()}'.capitalize(),
+                          '${AppLocalizations.of(context)!.language_changed_to.capitalize()} ${newLocale.toLanguageTag()}'.capitalize(),
                         ),
                         duration: const Duration(seconds: 2),
                       ),
@@ -57,12 +57,12 @@ class LanguageSelector extends StatelessWidget {
               Provider.of<LocaleProvider>(context, listen: false).resetLocale();
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
-                  content: Text('${AppLocalizations.of(context)!.languageResetLabel.capitalize()}: '),
+                  content: Text('${AppLocalizations.of(context)!.language_reset.capitalize()}: '),
                   duration: const Duration(seconds: 2),
                 ),
               );
             },
-            child: Text('${AppLocalizations.of(context)!.languageResetLabel.capitalize()}: '), // Button label
+            child: Text('${AppLocalizations.of(context)!.language_reset.capitalize()}: '), // Button label
           ),
         ],
       ),

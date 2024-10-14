@@ -1,30 +1,30 @@
 {
-  "navHome": "Accueil",
-  "@navHome": {
+  "nav_home": "Accueil",
+  "@nav_home": {
     "description": "Label for the Home navigation destination"
   },
-  "navSettings": "Paramètres",
-  "@navSettings": {
+  "nav_settings": "Paramètres",
+  "@nav_settings": {
     "description": "Label for the Settings navigation destination"
   },
-  "navProfile": "Profil",
-  "@navProfile": {
+  "nav_profile": "Profil",
+  "@nav_profile": {
     "description": "Label for the Profile navigation destination"
   },
-  "navSearch": "Rechercher",
-  "@navSearch": {
+  "nav_search": "Rechercher",
+  "@nav_search": {
     "description": "Label for the Search navigation destination"
   }
   ,
-  "btnDetails": "Détails",
+  "details": "Détails",
   "languageLabel": "Langue",
   "navDetails": "Aller aux détails",
   "showDetails": "Afficher les détails",
   "@showDetails": {
     "description": "Button label to show more details"
   },
-  "hideDetails": "Masquer les détails",
-  "@hideDetails": {
+  "hide_details": "Masquer les détails",
+  "@hide_details": {
     "description": "Button label to hide details"
   },
   "location": "emplacement",
@@ -39,36 +39,88 @@
   "@longitude": {
     "description": "Label for specifying longitude coordinate"
   },
-  "animalListTitle": "liste des animaux",
-  "@animalListTitle": {
+  "animal_list": "liste des animaux",
+  "@animal_list": {
     "description": "Title for the Animal List screen"
   },
-  "themeLabel": "thème",
-  "@themeLabel": {
+  "theme": "thème",
+  "@theme": {
      "description": "Label for specifying application theme"
    },
-  "languageResetLabel": "langue réinitialisée en anglais (États-Unis)",
-  "@languageResetLabel": {
+  "language_reset": "langue réinitialisée en anglais (États-Unis)",
+  "@language_reset": {
     "description": "Label for  Language reset to English (US)"
   },
-  "languageChangedToLabel": "Langue passée en ",
-  "@languageChangedToLabel": {
+  "language_changed_to": "Langue passée en ",
+  "@language_changed_to": {
     "description": "Label for  Language changed to"
   },
-  "systemDefaultLabel": "thème par défaut du système",
-  "@systemDefaultLabel": {
+  "system_default": "thème par défaut du système",
+  "@system_default": {
     "description": "Label for  system default"
   },
-  "themeChangedToLabel": "Theme par défaut appliqué",
-  "@themeChangedToLabel": {
+  "theme_changed_to": "Theme par défaut appliqué",
+  "@theme_changed_to": {
     "description": "Label for  theme changed to"
   },
-  "themeResetDefaultLabel": "Thème par défaut du système)'",
-  "@themeResetDefaultLabel": {
+  "theme_reset_default": "Thème par défaut du système)'",
+  "@theme_reset_default": {
     "description": "Label for  Theme reset to System Default'"
   },
-  "resetToDefaultThemeLabel": "retour au thème par défaut'",
-  "@resetToDefaultThemeLabel": {
+  "reset_default_theme": "retour au thème par défaut'",
+  "@reset_default_theme": {
     "description": "Label for  Reset to System Default Theme'"
+  },
+  "from": "De",
+  "to": "À",
+  "pickup_date": "Ramasser",
+  "return_date": "Retourner",
+  "cancel": "Annuler",
+  "apply": "Appliquer",
+  "retry": "réessayer",
+  "when": "quand",
+  "change_locale_title": "Change la langue de l'application",
+  "@change_locale_title": {
+    "description": "Label for the language selection destination"
+  },
+  "error_fetching_location": "Erreur lors de la récupération de l'emplacement. Veuillez réessayer.'",
+  "@error_fetching_location": {
+    "description": "Error message for fetching location failure.'"
+  },
+  "error_fetching_cars": "Erreur lors de la récupération des véhicules. Veuillez réessayer.'",
+  "@error_fetching_cars": {
+    "description": "Error message for fetching cars failure.'"
+  },
+  "current_location": "position actuelle",
+  "@current_location": {
+    "description": "Label for current location'"
+  },
+  "error_fetching_suggestions": "Erreur lors de la récupération des  suggestions.'",
+  "@error_fetching_suggestions": {
+    "description": "Error message for fetching suggestions failure.'"
+  },
+  "autocomplete_location_hint": "addresse spécifique, station, métro...'",
+  "@autocomplete_location_hint": {
+    "description": "Hint for locations autocomplete widget.'"
+  },
+  "error_fetching_current_location": "Erreur lors de la récupération de la position actuelle. Veuillez réessayer.'",
+  "@error_fetching_current_location": {
+    "description": "Error message for fetching the current location failure.'"
+  },
+  "unknown_location": "Position inconnue",
+  "@unknown_location": {
+    "description": "Label for unkown location'"
+  },
+  "location_permission_required": "L'autorisation de localisation est requise pour accéder à votre position actuelle.",
+  "@location_permission_required": {
+    "description": "Message to prevent that location permission is required to access your current location.'"
+  },
+  "error_fetching_place_details": "Erreur lors de la récupération des détails de la place.'",
+  "@error_fetching_place_details": {
+    "description": "Error message for fetching place details failure.'"
+  },
+  "no_cars_available": "aucun véhicule  disponible pour le moment.'",
+  "@no_cars_available": {
+    "description": "Message for no cars available at the moment.'"
   }
 }

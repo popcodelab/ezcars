@@ -1,5 +1,7 @@
+import 'package:ezcars/features/search/providers/location_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'features/search/providers/rental_period_provider.dart';
 import 'providers/theme_provider.dart';
 import 'providers/locale_provider.dart';
 import 'main_screen.dart';
@@ -18,7 +20,9 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => LocaleProvider()),
-        ChangeNotifierProvider(create: (_) => ThemeProvider()), // Provide ThemeProvider
+        ChangeNotifierProvider(create: (_) => ThemeProvider()),
+        ChangeNotifierProvider(create: (_) => LocationProvider()),
+        ChangeNotifierProvider(create: (_) => RentalPeriodProvider()),
       ],
       child: Consumer2<LocaleProvider, ThemeProvider>(
         builder: (context, localeProvider, themeProvider, child) {
