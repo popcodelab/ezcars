@@ -3,10 +3,13 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'model/animal.dart';
 import 'services/impl/animal_service.dart';
+import 'widgets/animal_details.dart';
 
-// HomeScreen with a list of animals and the ability to toggle in-place details for each animal
+/// The `HomeScreen` displays a list of animals fetched from the `AnimalService`.
+/// Each animal is shown with its image, name, and location (latitude and longitude).
+/// The user can toggle the visibility of additional details for each animal.
 class HomeScreen extends StatefulWidget {
-  final AnimalService animalService;
+  final AnimalService animalService; // Service to fetch the list of animals
 
   const HomeScreen({super.key, required this.animalService});
 
@@ -15,41 +18,53 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  int? _selectedAnimalIndex; // Keeps track of which animal's details are currently visible
+  int? _selectedAnimalIndex; // Keeps track of the currently selected animal to show details
 
+  /// Function to toggle the selected animal's details visibility.
+  void _toggleAnimalDetails(int index) {
+    setState(() {
+      _selectedAnimalIndex = (_selectedAnimalIndex == index) ? null : index;
+    });
+  }
+
+  /// Builds the main UI for the `HomeScreen`.
+  ///
+  /// The `ListView` displays all animals in a card, with the option to
+  /// show more details when the corresponding button is pressed.
   @override
   Widget build(BuildContext context) {
-    // Get list of animals from the service
+    // Get the list of animals from the service
     List<Animal> animals = widget.animalService.getAnimals();
 
-    // Check if AppLocalizations is available to prevent accessing it too early
+    // Check if localizations are loaded and available
     final localizations = AppLocalizations.of(context);
     if (localizations == null) {
-      // If localization is still null, show a loading spinner
+      // If localizations are not yet available, show a loading indicator
       return const Center(child: CircularProgressIndicator());
     }
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(localizations.animal_list), // Set the title from localizations
+        title: Text(localizations.animal_list), // Localized title for the app bar
       ),
       body: ListView.builder(
-        itemCount: animals.length, // The number of items is the length of the animals list
+        itemCount: animals.length, // Number of animals to display
         itemBuilder: (context, index) {
-          Animal animal = animals[index]; // Get the current animal
+          Animal animal = animals[index]; // Get the current animal from the list
           return Card(
             child: Column(
               children: [
                 ListTile(
+                  // Display the animal's image with rounded corners
                   leading: ClipRRect(
-                    borderRadius: BorderRadius.circular(8), // Rounded corners for the image
+                    borderRadius: BorderRadius.circular(8), // Rounded image corners
                     child: Image.asset(
-                      animal.imageUrl,
+                      animal.imageUrl, // Animal's image path
                       width: 50,
                       height: 50,
-                      fit: BoxFit.cover, // Ensure the image fits the space
+                      fit: BoxFit.cover, // Ensure the image fills the allocated space
                       errorBuilder: (context, error, stackTrace) {
-                        // Fallback image in case the animal image cannot be loaded
+                        // Fallback image in case the provided animal image cannot be loaded
                         return Image.asset(
                           'assets/images/animals/default_animal.png', // Default image path
                           width: 50,
@@ -59,81 +74,33 @@ class _HomeScreenState extends State<HomeScreen> {
                       },
                     ),
                   ),
-                  title: Text(animal.name), // Display the animal's name
+                  title: Text(animal.name), // Animal's name
                   subtitle: Text(
-                    '${localizations.location}: ${animal.latitude.toStringAsFixed(4)}, ${animal.longitude.toStringAsFixed(4)}', // Display location coordinates
+                    '${localizations.location}: ${animal.latitude.toStringAsFixed(4)}, ${animal.longitude.toStringAsFixed(4)}', // Localized location with latitude and longitude
                   ),
+                  // Button to toggle details for the selected animal
                   trailing: ElevatedButton(
-                    onPressed: () {
-                      setState(() {
-                        // Toggle the visibility of details: if this animal's details are visible, hide them, otherwise show
-                        _selectedAnimalIndex = (_selectedAnimalIndex == index) ? null : index;
-                      });
-                    },
+                    onPressed: () => _toggleAnimalDetails(index), // Toggle visibility on button press
+                    // Button text shows "Show Details" or "Hide Details" based on the visibility state
                     child: Text(
                       _selectedAnimalIndex == index
-                          ? localizations.hide_details // Show 'Hide Details' if the details are visible
-                          : localizations.showDetails, // Show 'Show Details' if the details are hidden
+                          ? localizations.hide_details // Localized text for hiding details
+                          : localizations.showDetails, // Localized text for showing details
                     ),
                   ),
                 ),
-                // Display animal details if the selected index matches the current animal
-                if (_selectedAnimalIndex == index) AnimalDetails(animal: animal),
+                // Smooth animation for showing/hiding animal details
+                AnimatedSize(
+                  duration: const Duration(milliseconds: 300), // Animation duration
+                  curve: Curves.easeInOut, // Smooth easing animation
+                  child: (_selectedAnimalIndex == index)
+                      ? AnimalDetails(animal: animal) // Show details if selected
+                      : const SizedBox.shrink(), // Hide details when not selected
+                ),
               ],
             ),
           );
         },
-      ),
-    );
-  }
-}
-
-// Extracted widget for displaying detailed information about the animal
-class AnimalDetails extends StatelessWidget {
-  final Animal animal;
-
-  const AnimalDetails({super.key, required this.animal});
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(16.0), // Add padding around the details
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start, // Align text to the left
-        children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(8), // Rounded corners for the larger image
-            child: Image.asset(
-              animal.imageUrl,
-              height: 150,
-              width: double.infinity, // Full width of the screen
-              fit: BoxFit.cover, // Ensure the image covers the space
-              errorBuilder: (context, error, stackTrace) {
-                // Fallback image in case the animal image cannot be loaded
-                return Image.asset(
-                  'assets/images/animals/default_animal.png', // Default image path
-                  height: 150,
-                  width: double.infinity, // Full width of the screen
-                  fit: BoxFit.cover,
-                );
-              },
-            ),
-          ),
-          const SizedBox(height: 8.0), // Add spacing between the image and text
-          Text(
-            animal.name,
-            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold), // Animal name with larger, bold font
-          ),
-          const SizedBox(height: 4.0), // Small spacing between name and details
-          Text(
-            '${AppLocalizations.of(context)!.latitude}: ${animal.latitude.toStringAsFixed(4)}', // Display the animal's latitude
-            style: const TextStyle(fontSize: 16),
-          ),
-          Text(
-            '${AppLocalizations.of(context)!.longitude}: ${animal.longitude.toStringAsFixed(4)}', // Display the animal's longitude
-            style: const TextStyle(fontSize: 16),
-          ),
-        ],
       ),
     );
   }
