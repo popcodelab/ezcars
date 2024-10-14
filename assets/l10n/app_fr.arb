@@ -39,9 +39,9 @@
   "@longitude": {
     "description": "Label for specifying longitude coordinate"
   },
-  "animal_list": "liste des animaux",
-  "@animal_list": {
-    "description": "Title for the Animal List screen"
+  "vehicles_list": "liste des véhicules",
+  "@vehicles_list": {
+    "description": "Title for the Vehicles List screen"
   },
   "theme": "thème",
   "@theme": {
@@ -79,6 +79,7 @@
   "apply": "Appliquer",
   "retry": "réessayer",
   "when": "quand",
+  "price": "prix",
   "change_locale_title": "Change la langue de l'application",
   "@change_locale_title": {
     "description": "Label for the language selection destination"
@@ -87,9 +88,9 @@
   "@error_fetching_location": {
     "description": "Error message for fetching location failure.'"
   },
-  "error_fetching_cars": "Erreur lors de la récupération des véhicules. Veuillez réessayer.'",
-  "@error_fetching_cars": {
-    "description": "Error message for fetching vehicules failure.'"
+  "error_fetching_vehicles": "Erreur lors de la récupération des véhicules. Veuillez réessayer.'",
+  "@error_fetching_vehicles": {
+    "description": "Error message for fetching vehicles failure.'"
   },
   "current_location": "position actuelle",
   "@current_location": {
@@ -119,8 +120,12 @@
   "@error_fetching_place_details": {
     "description": "Error message for fetching place details failure.'"
   },
-  "no_cars_available": "aucun véhicule  disponible pour le moment.'",
-  "@no_cars_available": {
-    "description": "Message for no vehicules available at the moment.'"
+  "no_vehicles_available": "aucun véhicule  disponible pour le moment.'",
+  "@no_vehicles_available": {
+    "description": "Message for no vehicles available at the moment.'"
+  },
+  "loading_vehicles": "chargement des véhicules...'",
+  "@loading_vehicles": {
+    "description": "Message for Loading vehicles...'"
   }
 }

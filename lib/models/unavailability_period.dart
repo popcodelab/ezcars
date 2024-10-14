@@ -1,6 +1,6 @@
 
-/// Defines an unavaibility period for a vehicule.
-/// The vehicule owner could block some dates for his own vehicule use
+/// Defines an unavaibility period for a vehicle.
+/// The vehicle owner could block some dates for his own vehicle use
 library;
 
 import 'package:flutter/material.dart';

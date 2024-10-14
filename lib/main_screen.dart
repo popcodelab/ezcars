@@ -1,8 +1,8 @@
+import 'package:ezcars/services/impl/vehicle_service.dart'; // Import the VehicleService
 import 'features/search/search_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'features/home/home_screen.dart';
-import 'features/home/services/impl/animal_service.dart';
+import 'features/home/home_screen.dart'; // Import updated HomeScreen
 import 'features/profile_screen.dart';
 import 'features/settings/settings_screen.dart';
 
@@ -19,7 +19,7 @@ class _MainScreenState extends State<MainScreen> {
 
   // List of screens corresponding to each tab
   final List<Widget> _screens = [
-    HomeScreen(animalService: AnimalService()), // Home screen with AnimalService dependency
+    HomeScreen(vehicleService: VehicleService()), // Home screen with VehicleService dependency
     const SearchScreen(), // Search screen
     const SettingsScreen(), // Settings screen
     const ProfileScreen(), // Profile screen
@@ -27,7 +27,6 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       // The body contains the screen corresponding to the selected index
       body: SafeArea(

@@ -1,16 +1,16 @@
 import 'dart:typed_data';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import '../models/vehicule.dart';
+import '../../../models/vehicle.dart';
 import '../providers/rental_period_provider.dart';
 
 /// Interface for handling map-related operations such as fetching data,
-/// updating circles, filtering vehicules, and adding custom markers.
+/// updating circles, filtering vehicles, and adding custom markers.
 abstract class IMapService {
 
-  /// Fetches the list of vehicules from the vehicule service.
+  /// Fetches the list of vehicles from the vehicle service.
   ///
-  /// Returns a list of [Vehicule] objects.
-  Future<List<Vehicule>> fetchVehicules();
+  /// Returns a list of [Vehicle] objects.
+  Future<List<Vehicle>> fetchVehicules();
 
   /// Fetches the user's current location using a location service.
   ///
@@ -27,31 +27,31 @@ abstract class IMapService {
   /// Returns a set of [Circle] objects to be drawn on the map.
   Set<Circle> updateCircles(LatLng currentLatLng, double walkingRadius, double opacity);
 
-  /// Filters the list of vehicules to only those that are within the visible region
+  /// Filters the list of vehicles to only those that are within the visible region
   /// of the map and available during the selected rental period.
   ///
-  /// [vehicules] is the list of all vehicules.
+  /// [vehicles] is the list of all vehicles.
   /// [bounds] is the visible region of the map defined by the latitude and longitude bounds.
   /// [rentalPeriodState] contains the selected rental period (start and end date).
   ///
-  /// Returns a filtered list of [Vehicule] objects that meet the location and availability criteria.
-  List<Vehicule> filterVisibleVehicules(List<Vehicule> vehicules, LatLngBounds bounds, RentalPeriodProvider rentalPeriodState);
+  /// Returns a filtered list of [Vehicle] objects that meet the location and availability criteria.
+  List<Vehicle> filterVisibleVehicules(List<Vehicle> vehicles, LatLngBounds bounds, RentalPeriodProvider rentalPeriodState);
 
-  /// Checks if a vehicule is within the visible bounds of the map.
+  /// Checks if a vehicle is within the visible bounds of the map.
   ///
-  /// [vehicule] is the vehicule to check.
+  /// [vehicle] is the vehicle to check.
   /// [bounds] defines the visible region of the map.
   ///
-  /// Returns `true` if the vehicule is within bounds, `false` otherwise.
-  bool isVehiculeWithinBounds(Vehicule vehicule, LatLngBounds bounds);
+  /// Returns `true` if the vehicle is within bounds, `false` otherwise.
+  bool isVehiculeWithinBounds(Vehicle vehicle, LatLngBounds bounds);
 
-  /// Checks if a vehicule is available during the selected rental period.
+  /// Checks if a vehicle is available during the selected rental period.
   ///
-  /// [vehicule] is the vehicule to check.
+  /// [vehicle] is the vehicle to check.
   /// [rentalPeriodState] contains the selected rental period (start and end date).
   ///
-  /// Returns `true` if the vehicule is available during the rental period, `false` otherwise.
-  bool isVehiculeAvailableDuringRentalPeriod(Vehicule vehicule, RentalPeriodProvider rentalPeriodState);
+  /// Returns `true` if the vehicle is available during the rental period, `false` otherwise.
+  bool isVehiculeAvailableDuringRentalPeriod(Vehicle vehicle, RentalPeriodProvider rentalPeriodState);
 
   /// Adds a custom marker with a label (such as "15 mins") to the map.
   ///

@@ -1,23 +1,24 @@
+
 import 'unavailability_period.dart';
 
-base class Vehicule {
-  final String name;
-  final String image;
+base class Vehicle {
+  final String model;
+  final String imageUrl;
   final String price;
   final String location;
   final String distance;
-  final double lat;
-  final double lng;
+  final double latitude;
+  final double longitude;
   final List<UnavailabilityPeriod> unavailabilityPeriods;
 
-  Vehicule({
-    required this.name,
-    required this.image,
+  Vehicle({
+    required this.model,
+    required this.imageUrl,
     required this.price,
     required this.location,
     required this.distance,
-    required this.lat,
-    required this.lng,
+    required this.latitude,
+    required this.longitude,
     this.unavailabilityPeriods = const [], // Default to empty list
   });
 }

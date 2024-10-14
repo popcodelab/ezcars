@@ -5,10 +5,10 @@ import 'package:ezcars/features/search/services/i_map_service.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter/material.dart';
 
-import '../../models/vehicule.dart';
+import '../../../../models/vehicle.dart';
 import '../../providers/rental_period_provider.dart';
-import '../i_vehicule_service.dart';
-import '../i_location_service.dart';
+import '../../../../services/i_vehicle_service.dart';
+import '../../../../services/i_location_service.dart';
 import '../i_map_circle_label_service.dart';
 import '../i_map_transparent_circle_service.dart';
 
@@ -18,13 +18,13 @@ import '../i_map_transparent_circle_service.dart';
 /// - Managing circles on the map
 /// - Filtering vehicles based on visibility and availability during a rental period
 class MapService implements IMapService {
-  final IVehiculeService carService;
+  final IVehicleService carService;
   final ILocationService locationService;
   final IMapCircleLabelService mapCircleLabelService;
   final IMapTransparentCircleService circlesService;
 
   /// Caches the list of vehicles to avoid repeated fetching from the service.
-  List<Vehicule>? _cachedVehicules;
+  List<Vehicle>? _cachedVehicules;
 
   MapService({
     required this.carService,
@@ -37,16 +37,16 @@ class MapService implements IMapService {
   /// Caches the result to improve performance.
   /// Handles any errors by logging or returning an empty list.
   @override
-  Future<List<Vehicule>> fetchVehicules() async {
+  Future<List<Vehicle>> fetchVehicules() async {
     // Return cached vehicles if available
     if (_cachedVehicules != null) {
       return _cachedVehicules!;
     }
 
     try {
-      final vehicules = await carService.getCars();
-      _cachedVehicules = vehicules; // Cache the fetched vehicles
-      return vehicules;
+      final vehicles = await carService.getVehicles();
+      _cachedVehicules = vehicles; // Cache the fetched vehicles
+      return vehicles;
     } catch (e) {
       // Handle the error (logging or showing a message)
       print("Error fetching vehicles: $e");
@@ -91,36 +91,36 @@ class MapService implements IMapService {
   /// Additionally filters vehicles that are available during the selected rental period
   /// in the `RentalPeriodProvider`.
   @override
-  List<Vehicule> filterVisibleVehicules(
-      List<Vehicule> vehicules, LatLngBounds bounds, RentalPeriodProvider rentalPeriodState) {
-    return vehicules.where((vehicule) {
-      bool isWithinBounds = isVehiculeWithinBounds(vehicule, bounds);
+  List<Vehicle> filterVisibleVehicules(
+      List<Vehicle> vehicles, LatLngBounds bounds, RentalPeriodProvider rentalPeriodState) {
+    return vehicles.where((vehicle) {
+      bool isWithinBounds = isVehiculeWithinBounds(vehicle, bounds);
 
       // If rental period isn't set, only filter by bounds.
       if (rentalPeriodState.startDate == null || rentalPeriodState.endDate == null) {
         return isWithinBounds;
       }
 
-      bool isAvailable = isVehiculeAvailableDuringRentalPeriod(vehicule, rentalPeriodState);
+      bool isAvailable = isVehiculeAvailableDuringRentalPeriod(vehicle, rentalPeriodState);
       return isWithinBounds && isAvailable;
     }).toList();
   }
 
   /// Checks if a given vehicle is within the visible map bounds.
-  bool isVehiculeWithinBounds(Vehicule vehicule, LatLngBounds bounds) {
-    return vehicule.lat >= bounds.southwest.latitude &&
-        vehicule.lat <= bounds.northeast.latitude &&
-        vehicule.lng >= bounds.southwest.longitude &&
-        vehicule.lng <= bounds.northeast.longitude;
+  bool isVehiculeWithinBounds(Vehicle vehicle, LatLngBounds bounds) {
+    return vehicle.latitude >= bounds.southwest.latitude &&
+        vehicle.latitude <= bounds.northeast.latitude &&
+        vehicle.longitude >= bounds.southwest.longitude &&
+        vehicle.longitude <= bounds.northeast.longitude;
   }
 
   /// Checks if a vehicle is available during the selected rental period.
-  bool isVehiculeAvailableDuringRentalPeriod(Vehicule vehicule, RentalPeriodProvider rentalPeriodState) {
+  bool isVehiculeAvailableDuringRentalPeriod(Vehicle vehicle, RentalPeriodProvider rentalPeriodState) {
     DateTime selectedStartDate = rentalPeriodState.startDate!;
     DateTime selectedEndDate = rentalPeriodState.endDate!;
 
     // Return false if any unavailability period overlaps with the rental period.
-    return !vehicule.unavailabilityPeriods.any((period) {
+    return !vehicle.unavailabilityPeriods.any((period) {
       return selectedStartDate.isBefore(period.endDate) &&
           selectedEndDate.isAfter(period.startDate);
     });
