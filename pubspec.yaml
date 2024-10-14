@@ -56,7 +56,8 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
+  mockito: ^5.0.0
+  build_runner: ^2.0.0 # Required for generating mock files
     
 
   # The "flutter_lints" package below contains a set of recommended lints to

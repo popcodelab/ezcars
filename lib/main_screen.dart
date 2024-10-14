@@ -1,9 +1,6 @@
 import 'features/search/search_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:provider/provider.dart';
-
-import '../providers/locale_provider.dart';
 import 'features/home/home_screen.dart';
 import 'features/home/services/impl/animal_service.dart';
 import 'features/profile_screen.dart';
