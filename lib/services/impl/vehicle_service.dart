@@ -3,6 +3,7 @@ import 'package:geolocator/geolocator.dart';
 
 import '../../models/unavailability_period.dart';
 import '../../models/vehicle.dart';
+import '../../providers/walking_radiius_provider.dart';
 import '../i_vehicle_service.dart';
 
 import 'dart:math'; // For distance calculations
@@ -111,7 +112,9 @@ class VehicleService implements IVehicleService {
   /// Filters vehicles by proximity to the user's location within a given radius.
   @override
   Future<List<Vehicle>> filterVehiclesByProximity(
-      List<Vehicle> vehicles, Position userPosition, double radius) async {
+      List<Vehicle> vehicles, Position userPosition, WalkingRadiusProvider radiusProvider) async {
+    final double radius = radiusProvider.walkingRadius; // Correctly access walkingRadius from the provider
+
     return vehicles.where((vehicle) {
       final distance = _calculateDistance(
         userPosition.latitude,

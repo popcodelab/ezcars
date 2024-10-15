@@ -9,6 +9,8 @@ import 'main_screen.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import 'providers/walking_radiius_provider.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -25,6 +27,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => LocationProvider()),
         ChangeNotifierProvider(create: (_) => RentalPeriodProvider()),
         ChangeNotifierProvider(create: (_) => RecentPlacesProvider()),
+        ChangeNotifierProvider(create: (_) => WalkingRadiusProvider()), // Add WalkingRadiusProvider
       ],
       child: Consumer2<LocaleProvider, ThemeProvider>(
         builder: (context, localeProvider, themeProvider, child) {

@@ -129,14 +129,20 @@ class MapService implements IMapService {
   /// Adds a custom marker to the map, typically representing walking time or a label.
   /// Returns a `Uint8List` representing the marker icon.
   @override
-  Future<Uint8List> addCustomLabelMarker(
-      LatLng currentLatLng, double walkingRadius) async {
-    // Calculates new latitude based on walking radius
-    final double newLatitude = currentLatLng.latitude + (walkingRadius / 111000.0);
+  Future<Uint8List> addCustomLabelMarker(LatLng currentLatLng, double walkingRadius) async {
+    // Average walking speed is approximately 1.4 meters per second (5 km/h).
+    const double averageWalkingSpeedMetersPerSecond = 1.4;
+
+    // Calculate the walking time in minutes
+    final int walkingTimeMinutes = (walkingRadius / averageWalkingSpeedMetersPerSecond / 60).round();
+
+    // Create the label dynamically based on the calculated walking time
+    final String walkingTimeLabel = '$walkingTimeMinutes mins';
 
     const Size markerSize = Size(150, 60); // Size of the marker
 
     // Creates a custom marker using the `mapCircleLabelService`
-    return await mapCircleLabelService.createCustomMarker('15 mins', markerSize);
+    return await mapCircleLabelService.createCustomMarker(walkingTimeLabel, markerSize);
   }
+
 }

@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:ezcars/services/i_location_service.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:provider/provider.dart'; // Import provider
+import '../../providers/walking_radiius_provider.dart';
+import '../../services/i_location_service.dart';
 import '../../services/i_vehicle_service.dart';
 import 'widgets/vehicle_list_item.dart';
 import 'package:ezcars/models/vehicle.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class HomeScreen extends StatefulWidget {
-  final IVehicleService vehicleService; // Service to fetch the list of vehicles
-  final ILocationService locationService; // Service to handle location fetching
+  final IVehicleService vehicleService;
+  final ILocationService locationService;
 
   const HomeScreen({
     super.key,
@@ -21,35 +23,30 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  int? _selectedVehicleIndex; // Keeps track of the currently selected vehicle to show details
-  Future<List<Vehicle>>? _vehiclesFuture; // Cache the future to avoid refetching
-  Position? _userPosition; // Stores the user's current position
-  List<Vehicle> _filteredVehicles = []; // Store filtered vehicles based on location
-
-  static const double walkingDistanceRadiusMeters = 1250; // ~15 minutes walking distance
+  int? _selectedVehicleIndex;
+  Future<List<Vehicle>>? _vehiclesFuture;
+  Position? _userPosition;
+  List<Vehicle> _filteredVehicles = [];
 
   @override
   void initState() {
     super.initState();
-    _vehiclesFuture = widget.vehicleService.getVehicles(); // Fetch the initial vehicle list
+    _vehiclesFuture = widget.vehicleService.getVehicles();
   }
 
-  /// Toggle the selected vehicle's details visibility
   void _toggleVehicleDetails(int index) {
     setState(() {
       _selectedVehicleIndex = (_selectedVehicleIndex == index) ? null : index;
     });
   }
 
-  /// Refresh the vehicle list when the user pulls to refresh
   Future<void> _refreshVehicles() async {
     setState(() {
-      _filteredVehicles = []; // Clear the filtered list, showing all vehicles
-      _vehiclesFuture = widget.vehicleService.getVehicles(); // Fetch all vehicles
+      _filteredVehicles = [];
+      _vehiclesFuture = widget.vehicleService.getVehicles();
     });
   }
 
-  /// Fetch the user's location and filter vehicles within a 15-minute walking distance
   Future<void> _fetchUserLocation() async {
     try {
       Position? position = await widget.locationService.fetchUserLocation(context);
@@ -69,15 +66,16 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  /// Filter vehicles based on proximity using `VehicleService`
   void _filterVehiclesByProximity() async {
     if (_userPosition == null) return;
+
+    final radiusProvider = Provider.of<WalkingRadiusProvider>(context, listen: false);
 
     final vehicles = await widget.vehicleService.getVehicles();
     final filteredVehicles = await widget.vehicleService.filterVehiclesByProximity(
       vehicles,
       _userPosition!,
-      walkingDistanceRadiusMeters,
+      radiusProvider,
     );
 
     setState(() {
@@ -93,12 +91,12 @@ class _HomeScreenState extends State<HomeScreen> {
         actions: [
           IconButton(
             icon: const Icon(Icons.my_location),
-            onPressed: _fetchUserLocation, // Fetch user location on button press
+            onPressed: _fetchUserLocation,
           ),
         ],
       ),
       body: RefreshIndicator(
-        onRefresh: _refreshVehicles, // Handle pull-to-refresh
+        onRefresh: _refreshVehicles,
         child: FutureBuilder<List<Vehicle>>(
           future: _vehiclesFuture,
           builder: (context, snapshot) {

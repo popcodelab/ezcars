@@ -5,7 +5,8 @@ import 'package:flutter/material.dart'; // Flutter UI framework
 import 'package:google_maps_flutter/google_maps_flutter.dart'; // Google Maps plugin for Flutter
 import 'package:provider/provider.dart'; // State management (global state)
 
-import '../../models/vehicle.dart'; // Vehicule model class
+import '../../models/vehicle.dart'; // Vehicle model class
+import '../../providers/walking_radiius_provider.dart';
 import 'models/place.dart'; // Place model class
 import 'providers/location_provider.dart';
 import 'providers/rental_period_provider.dart';
@@ -25,8 +26,6 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'widgets/vehicules_list_widget.dart';
 
-
-
 /// This screen shows a Google Map displaying vehicle markers and allows the user to
 /// filter vehicles based on their location and rental period.
 class SearchScreen extends StatefulWidget {
@@ -43,7 +42,6 @@ class _SearchScreenState extends State<SearchScreen> {
   LatLng? _currentLatLng; // Stores the user's current location
   bool _loadingLocation = true; // Indicates if user location is loading
   bool _loadingCars = true; // Indicates if vehicle data is loading
-  double walkingRadius = 1250; // Walking distance radius in meters
   double mapZoomLevel = 16; // Map zoom level
 
   List<Vehicle> vehicles = []; // List of all available vehicles
@@ -128,6 +126,9 @@ class _SearchScreenState extends State<SearchScreen> {
   void _updateCircles(double zoomLevel) {
     if (_currentLatLng != null) {
       setState(() {
+        // Use the walking radius from the provider instead of the hardcoded value
+        double walkingRadius = context.read<WalkingRadiusProvider>().walkingRadius;
+
         boundsCircle = _mapService.updateCircles(
           _currentLatLng!, // User's current location
           walkingRadius, // Walking radius in meters
@@ -156,6 +157,9 @@ class _SearchScreenState extends State<SearchScreen> {
   /// Adds a custom label marker (e.g., "15 mins") to the map above the user's location.
   Future<void> _addCustomLabelMarker() async {
     if (_currentLatLng != null) {
+      // Use the walking radius from the provider
+      double walkingRadius = context.read<WalkingRadiusProvider>().walkingRadius;
+
       // Create custom marker for walking time label
       final Uint8List markerIcon = await _mapService.addCustomLabelMarker(_currentLatLng!, walkingRadius);
       setState(() {

@@ -1,5 +1,6 @@
 import 'package:geolocator/geolocator.dart';
 import '../models/vehicle.dart';
+import '../providers/walking_radiius_provider.dart';
 
 abstract class IVehicleService {
   Future<List<Vehicle>> getVehicles();
@@ -8,6 +9,6 @@ abstract class IVehicleService {
   Future<List<Vehicle>> filterVehiclesByProximity(
       List<Vehicle> vehicles,
       Position userPosition,
-      double radius,
+      WalkingRadiusProvider radiusProvider
       );
 }

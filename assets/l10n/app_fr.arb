@@ -155,5 +155,13 @@
   "fetching_location_name": "Récupération de l'adresse",
   "@fetching_location_name": {
     "description": "Error message for Fetching location name"
+  },
+  "walking_radius_label": "Rayon de marche à pied (mètres)",
+  "@walking_radius_label": {
+    "description": "Setting label for Walking Radius (meters)"
+  },
+  "current_radius": "Rayon actuel",
+  "@current_radius": {
+    "description": "Setting label for Current radius"
   }
 }
