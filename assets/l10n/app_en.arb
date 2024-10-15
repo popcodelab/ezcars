@@ -152,5 +152,13 @@
   "fetching_location_name": "Fetching location name",
   "@fetching_location_name": {
     "description": "Error message for Fetching location name"
+  },
+  "walking_radius_label": "Walking Radius (meters)",
+  "@walking_radius_label": {
+    "description": "Setting label for Walking Radius (meters)"
+  },
+  "current_radius": "Current radius",
+  "@current_radius": {
+    "description": "Setting label for Current radius"
   }
 }
