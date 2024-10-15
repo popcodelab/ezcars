@@ -39,8 +39,8 @@ class SettingsScreen extends StatelessWidget {
                     Slider(
                       value: walkingRadiusProvider.walkingRadius,
                       min: 500,
-                      max: 3000,
-                      divisions: 10,
+                      max: 6000,
+                      divisions: 20,
                       label: '${walkingRadiusProvider.walkingRadius.round()} meters',
                       onChanged: (double value) {
                         walkingRadiusProvider.updateRadius(value);
