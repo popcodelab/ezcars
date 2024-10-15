@@ -16,13 +16,14 @@ import 'services/impl/map_circle_label_service.dart'; // Implementation of circl
 import 'services/impl/map_service.dart';
 import 'services/impl/map_transparent_circle_service.dart'; // New transparent circle service
 import 'utilities/date_time_formatter.dart';
-import 'widgets/vehicules_list_widget.dart';
 import 'widgets/date_time/custom_date_range_picker.dart';
 import 'widgets/date_time/date_time_picker_tile.dart';
 import 'widgets/location_picker_tile.dart';
 import 'widgets/places_autocompletion_with_history.dart'; // Utility for formatting dates
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+import 'widgets/vehicules_list_widget.dart';
 
 
 
@@ -100,7 +101,7 @@ class _SearchScreenState extends State<SearchScreen> {
       _loadingLocation = true; // Show loading while fetching location
     });
 
-    final position = await _mapService.fetchUserLocation(); // Fetch user location
+    final position = await _mapService.fetchUserLocation(context); // Fetch user location
     if (mounted && position != null) {
       setState(() {
         _currentLatLng = position; // Update the user's location

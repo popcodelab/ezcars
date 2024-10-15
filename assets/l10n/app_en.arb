@@ -121,8 +121,36 @@
   "@no_vehicles_available": {
     "description": "Message for no vehicles available at the moment.'"
   },
-  "loading_vehicles": "Loading vehicles...'",
+  "loading_vehicles": "Loading vehicles...",
   "@loading_vehicles": {
-    "description": "Message for Loading vehicles...'"
+    "description": "Message for Loading vehicles..."
+  },
+  "location_services_disabled": "Location services are disabled. Please enable them.",
+  "@location_services_disabled": {
+    "description": "Message for Location services are disabled. Please enable them."
+  },
+  "location_permissions_denied": "Location permission denied. Please grant location access.",
+  "@location_permissions_denied": {
+    "description": "Message for Location permission denied. Please grant location access."
+  },
+  "location_permissions_permanently_denied": "Location permissions are permanently denied. Please enable them in settings.",
+  "@locationPermissionsPermanentlyDenied": {
+    "description": "Message for Location permissions are permanently denied. Please enable them in settings."
+  },
+  "no_results_for_coordinates": "No address found with these coordinates",
+  "@no_results_for_coordinates": {
+    "description": "Message for No address found with these coordinates"
+  },
+  "network_error": "Network error !",
+  "@network_error": {
+    "description": "Error message for Network error !"
+  },
+  "timeout_error": "Fetching location timed out",
+  "@timeout_error": {
+    "description": "Error message for Fetching location timed out"
+  },
+  "fetching_location_name": "Fetching location name",
+  "@fetching_location_name": {
+    "description": "Error message for Fetching location name"
   }
 }

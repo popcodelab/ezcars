@@ -58,9 +58,9 @@ class MapService implements IMapService {
   /// Returns a `LatLng` object or `null` if the location could not be fetched.
   /// Handles potential errors by returning null.
   @override
-  Future<LatLng?> fetchUserLocation() async {
+  Future<LatLng?> fetchUserLocation(BuildContext context) async {
     try {
-      final position = await locationService.fetchUserLocation();
+      final position = await locationService.fetchUserLocation(context);
       if (position != null) {
         return LatLng(position.latitude, position.longitude);
       }

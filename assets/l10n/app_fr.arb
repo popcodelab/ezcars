@@ -124,8 +124,36 @@
   "@no_vehicles_available": {
     "description": "Message for no vehicles available at the moment.'"
   },
-  "loading_vehicles": "chargement des véhicules...'",
+  "loading_vehicles": "chargement des véhicules...",
   "@loading_vehicles": {
-    "description": "Message for Loading vehicles...'"
+    "description": "Message for Loading vehicles..."
+  },
+  "location_services_disabled": "Les services de localisation sont désactivés. Veuillez les activer.",
+  "@location_services_disabled": {
+    "description": "Message for Location services are disabled. Please enable them."
+  },
+  "location_permissions_denied": "Autorisation de localisation refusée. Veuillez autoriser l'accès à la localisation.",
+  "@location_permissions_denied": {
+    "description": "Message for Location permission denied. Please grant location access."
+  },
+  "location_permissions_permanently_denied": "Les autorisations de localisation sont refusées de manière permanente. Veuillez les activer dans les paramètres.",
+  "@location_permissions_permanently_denied": {
+    "description": "Message for Location permissions are permanently denied. Please enable them in settings."
+  },
+  "no_results_for_coordinates": "impossible de déterminer l''adresse avec ces coordonnées",
+  "@no_results_for_coordinates": {
+    "description": "Message for No address found with these coordinates"
+  },
+  "network_error": "Erreur réseau !",
+  "@network_error": {
+    "description": "Error message for Network error !"
+  },
+  "timeout_error": "Fetching location timed out",
+  "@timeout_error": {
+    "description": "Error message for Fetching location timed out"
+  },
+  "fetching_location_name": "Récupération de l'adresse",
+  "@fetching_location_name": {
+    "description": "Error message for Fetching location name"
   }
 }

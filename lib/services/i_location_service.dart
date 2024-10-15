@@ -1,12 +1,12 @@
 import 'package:geolocator/geolocator.dart';
+import 'package:flutter/material.dart'; // Required for BuildContext
 
 abstract class ILocationService {
-  // Future<bool> isLocationServiceEnabled();
-  // Future<LocationPermission> checkAndRequestPermission();
-  // Future<void> openAppSettings();
-  // Future<void> openLocationSettings();
-  // Future<Position> getCurrentLocation();
-  Future<Position?> fetchUserLocation();
+  /// Fetch the user's current location with permission and location service checks.
+  /// The `context` is used for localization.
+  Future<Position?> fetchUserLocation(BuildContext context);
 
-  // Add any additional methods declared in the interface
+  /// Get the place name (formatted address) based on latitude and longitude.
+  /// The `context` is used for localization.
+  Future<String?> getPlaceName(double latitude, double longitude, BuildContext context);
 }

@@ -1,21 +1,21 @@
-import 'package:ezcars/extensions/string_extensions.dart';
 import 'package:flutter/material.dart';
-
-import '../../../models/vehicle.dart';
+import 'package:ezcars/models/vehicle.dart';
 import 'vehicle_details.dart';
+import 'package:ezcars/services/i_location_service.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-/// A modularized component for displaying a vehicle in a list item.
 class VehicleListItem extends StatelessWidget {
   final Vehicle vehicle;
   final bool isSelected;
   final VoidCallback onTap;
+  final ILocationService locationService; // Add this if needed for fetching the location
 
   const VehicleListItem({
     Key? key,
     required this.vehicle,
     required this.isSelected,
     required this.onTap,
+    required this.locationService, // Pass the location service
   }) : super(key: key);
 
   @override
@@ -24,40 +24,36 @@ class VehicleListItem extends StatelessWidget {
       child: Column(
         children: [
           ListTile(
-            // Tap the entire ListTile to show/hide vehicle details
-            onTap: onTap, // Handles toggling details
-            // Display the vehicle's image from the assets folder
+            onTap: onTap, // Handles toggling details when tapping the entire ListTile
+
             leading: ClipRRect(
               borderRadius: BorderRadius.circular(8),
               child: Image.asset(
-                vehicle.imageUrl, // Asset path for the image
+                vehicle.imageUrl,
                 width: 50,
                 height: 50,
-                fit: BoxFit.cover, // Ensure the image fits within the box
+                fit: BoxFit.cover,
                 errorBuilder: (context, error, stackTrace) {
-                  // Fallback to an icon if the image fails to load
                   return const Icon(Icons.car_rental, size: 50, color: Colors.grey);
                 },
               ),
             ),
-            // Display the vehicle model using theme-based styling
             title: Text(
               vehicle.model,
-              style: Theme.of(context).textTheme.titleMedium, // Use theme's subtitle style
+              style: Theme.of(context).textTheme.titleMedium,
             ),
-            // Display the vehicle price using localized text
             subtitle: Text(
-              '${AppLocalizations.of(context)?.price.capitalize()??'Price'}: ${vehicle.price}',
+              '${AppLocalizations.of(context)?.price ?? 'Price'}: ${vehicle.price}',
             ),
-            // Show an expand/collapse icon based on the selected state
             trailing: Icon(isSelected ? Icons.expand_less : Icons.expand_more),
           ),
-          // Show vehicle details if this item is selected
           if (isSelected)
             Padding(
               padding: const EdgeInsets.all(8.0),
-              // Display the detailed information of the vehicle
-              child: VehicleDetails(vehicle: vehicle),
+              child: VehicleDetails(
+                vehicle: vehicle,
+                locationService: locationService, // Pass the location service if required
+              ),
             ),
         ],
       ),

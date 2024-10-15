@@ -1,4 +1,5 @@
 import 'dart:typed_data';
+import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../../../models/vehicle.dart';
 import '../providers/rental_period_provider.dart';
@@ -16,7 +17,7 @@ abstract class IMapService {
   ///
   /// Returns a [LatLng] object with the user's latitude and longitude,
   /// or `null` if the location cannot be fetched.
-  Future<LatLng?> fetchUserLocation();
+  Future<LatLng?> fetchUserLocation(BuildContext context);
 
   /// Updates the transparent circles around the user's current location.
   ///
