@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 
 import '../../models/unavailability_period.dart';
 import '../../models/vehicle.dart';
 import '../i_vehicle_service.dart';
 
+import 'dart:math'; // For distance calculations
+
 /// Service that provides a list of available vehicles for rental.
 /// Implements the [IVehicleService] interface.
 class VehicleService implements IVehicleService {
-  
+
   /// Method to fetch the list of available vehicles.
-  /// 
+  ///
   /// This method returns a static list of vehicle objects.
   /// In a real application, this could be modified to involve making a network request.
   @override
@@ -103,5 +106,38 @@ class VehicleService implements IVehicleService {
         ],
       ),
     ];
+  }
+
+  /// Filters vehicles by proximity to the user's location within a given radius.
+  @override
+  Future<List<Vehicle>> filterVehiclesByProximity(
+      List<Vehicle> vehicles, Position userPosition, double radius) async {
+    return vehicles.where((vehicle) {
+      final distance = _calculateDistance(
+        userPosition.latitude,
+        userPosition.longitude,
+        vehicle.latitude,
+        vehicle.longitude,
+      );
+      return distance <= radius;
+    }).toList();
+  }
+
+  /// Calculate the distance between two lat/lon coordinates using the Haversine formula
+  double _calculateDistance(double lat1, double lon1, double lat2, double lon2) {
+    const double earthRadiusMeters = 6371000; // Radius of the Earth in meters
+    final double dLat = _degreesToRadians(lat2 - lat1);
+    final double dLon = _degreesToRadians(lon2 - lon1);
+
+    final double a = sin(dLat / 2) * sin(dLat / 2) +
+        cos(_degreesToRadians(lat1)) * cos(_degreesToRadians(lat2)) *
+            sin(dLon / 2) * sin(dLon / 2);
+    final double c = 2 * atan2(sqrt(a), sqrt(1 - a));
+    return earthRadiusMeters * c; // Distance in meters
+  }
+
+  /// Helper function to convert degrees to radians
+  double _degreesToRadians(double degrees) {
+    return degrees * pi / 180;
   }
 }
