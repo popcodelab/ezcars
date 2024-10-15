@@ -258,7 +258,8 @@ class _SearchScreenState extends State<SearchScreen> {
             circles: boundsCircle, // Draw transparent circles
             markers: markers, // Display vehicle markers
             myLocationEnabled: true, // Enable user's location button
-            myLocationButtonEnabled: true, // Show the user's location button
+            myLocationButtonEnabled: false, // Hide the location button
+            zoomControlsEnabled: false, // Hide the zoom buttons
           ),
 
           // Overlay for selecting location and date-time
