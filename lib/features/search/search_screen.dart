@@ -5,18 +5,17 @@ import 'package:flutter/material.dart'; // Flutter UI framework
 import 'package:google_maps_flutter/google_maps_flutter.dart'; // Google Maps plugin for Flutter
 import 'package:provider/provider.dart'; // State management (global state)
 
-import 'models/vehicule.dart'; // Vehicule model class
+import '../../models/vehicle.dart'; // Vehicule model class
 import 'models/place.dart'; // Place model class
 import 'providers/location_provider.dart';
 import 'providers/rental_period_provider.dart';
 import 'services/i_map_service.dart';
-import 'services/impl/vehicule_service.dart'; // Implementation of vehicule service
-import 'services/impl/location_service.dart'; // Implementation of location service
+import '../../services/impl/vehicle_service.dart'; // Implementation of vehicle service
+import '../../services/impl/location_service.dart'; // Implementation of location service
 import 'services/impl/map_circle_label_service.dart'; // Implementation of circle label service
 import 'services/impl/map_service.dart';
 import 'services/impl/map_transparent_circle_service.dart'; // New transparent circle service
 import 'utilities/date_time_formatter.dart';
-import 'widgets/vehicules_list_widget.dart';
 import 'widgets/date_time/custom_date_range_picker.dart';
 import 'widgets/date_time/date_time_picker_tile.dart';
 import 'widgets/location_picker_tile.dart';
@@ -24,10 +23,12 @@ import 'widgets/places_autocompletion_with_history.dart'; // Utility for formatt
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import 'widgets/vehicules_list_widget.dart';
 
 
-/// This screen shows a Google Map displaying vehicule markers and allows the user to
-/// filter vehicules based on their location and rental period.
+
+/// This screen shows a Google Map displaying vehicle markers and allows the user to
+/// filter vehicles based on their location and rental period.
 class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key});
 
@@ -41,14 +42,14 @@ class _SearchScreenState extends State<SearchScreen> {
 
   LatLng? _currentLatLng; // Stores the user's current location
   bool _loadingLocation = true; // Indicates if user location is loading
-  bool _loadingCars = true; // Indicates if vehicule data is loading
+  bool _loadingCars = true; // Indicates if vehicle data is loading
   double walkingRadius = 1250; // Walking distance radius in meters
   double mapZoomLevel = 16; // Map zoom level
 
-  List<Vehicule> vehicules = []; // List of all available vehicules
+  List<Vehicle> vehicles = []; // List of all available vehicles
   Set<Circle> boundsCircle = {}; // Set of transparent circles drawn on the map
   Set<Marker> markers = {}; // Set of markers displayed on the map
-  List<Vehicule> visibleCars = []; // List of vehicules visible within the map bounds
+  List<Vehicle> visibleCars = []; // List of vehicles visible within the map bounds
 
   // The map service that contains all the business logic
   late IMapService _mapService;
@@ -59,30 +60,30 @@ class _SearchScreenState extends State<SearchScreen> {
 
     // Initialize the map service with required dependencies
     _mapService = MapService(
-      carService: VehiculeService(),
+      carService: VehicleService(),
       locationService: LocationService(),
       mapCircleLabelService: MapCircleLabelService(),
       circlesService: MapTransparentCircleService(),
     );
 
-    _fetchVehicules(); // Fetch vehicule data on initialization
+    _fetchVehicules(); // Fetch vehicle data on initialization
     _fetchUserLocation(); // Fetch user location on initialization
   }
 
-  /// Fetches vehicule data from the map service and adds vehicule markers to the map.
+  /// Fetches vehicle data from the map service and adds vehicle markers to the map.
   Future<void> _fetchVehicules() async {
     try {
-      final fetchedCars = await _mapService.fetchVehicules(); // Fetch vehicules using service
+      final fetchedCars = await _mapService.fetchVehicules(); // Fetch vehicles using service
       setState(() {
-        vehicules = fetchedCars; // Update the list of vehicules
+        vehicles = fetchedCars; // Update the list of vehicles
         _loadingCars = false; // Set loading to false after data is loaded
 
-        // Create markers for each vehicule
-        markers.addAll(vehicules.map((vehicule) {
+        // Create markers for each vehicle
+        markers.addAll(vehicles.map((vehicle) {
           return Marker(
-            markerId: MarkerId(vehicule.name), // Unique ID for each marker
-            position: LatLng(vehicule.lat, vehicule.lng), // Position of the vehicule
-            infoWindow: InfoWindow(title: vehicule.name), // Info window with vehicule name
+            markerId: MarkerId(vehicle.model), // Unique ID for each marker
+            position: LatLng(vehicle.latitude, vehicle.longitude), // Position of the vehicle
+            infoWindow: InfoWindow(title: vehicle.model), // Info window with vehicle name
           );
         }));
       });
@@ -90,7 +91,7 @@ class _SearchScreenState extends State<SearchScreen> {
       setState(() {
         _loadingCars = false; // Stop loading even on error
       });
-      _showErrorSnackBar(AppLocalizations.of(context)!.error_fetching_cars); // Display error message
+      _showErrorSnackBar(AppLocalizations.of(context)!.error_fetching_vehicles); // Display error message
     }
   }
 
@@ -100,7 +101,7 @@ class _SearchScreenState extends State<SearchScreen> {
       _loadingLocation = true; // Show loading while fetching location
     });
 
-    final position = await _mapService.fetchUserLocation(); // Fetch user location
+    final position = await _mapService.fetchUserLocation(context); // Fetch user location
     if (mounted && position != null) {
       setState(() {
         _currentLatLng = position; // Update the user's location
@@ -136,7 +137,7 @@ class _SearchScreenState extends State<SearchScreen> {
     }
   }
 
-  /// Filters the vehicules visible on the map based on the map's bounds and rental period.
+  /// Filters the vehicles visible on the map based on the map's bounds and rental period.
   void _filterVisibleVehicules() async {
     if (mounted && mapController != null) {
       // Get the bounds of the visible map area
@@ -145,9 +146,9 @@ class _SearchScreenState extends State<SearchScreen> {
       // Access the rental period from the global state (via Provider)
       final rentalPeriodState = context.read<RentalPeriodProvider>();
 
-      // Filter the visible vehicules using the map service
+      // Filter the visible vehicles using the map service
       setState(() {
-        visibleCars = _mapService.filterVisibleVehicules(vehicules, bounds, rentalPeriodState);
+        visibleCars = _mapService.filterVisibleVehicules(vehicles, bounds, rentalPeriodState);
       });
     }
   }
@@ -217,7 +218,7 @@ class _SearchScreenState extends State<SearchScreen> {
         _animateOrMoveToLocation(_currentLatLng!, mapZoomLevel, instantMove: true);
       }
 
-      // Update circles and visible vehicules when location changes
+      // Update circles and visible vehicles when location changes
       _updateCircles(mapZoomLevel);
       _filterVisibleVehicules();
     }
@@ -248,10 +249,10 @@ class _SearchScreenState extends State<SearchScreen> {
               });
             },
             onCameraIdle: () {
-              _filterVisibleVehicules(); // Filter visible vehicules when the camera stops moving
+              _filterVisibleVehicules(); // Filter visible vehicles when the camera stops moving
             },
             circles: boundsCircle, // Draw transparent circles
-            markers: markers, // Display vehicule markers
+            markers: markers, // Display vehicle markers
             myLocationEnabled: true, // Enable user's location button
             myLocationButtonEnabled: true, // Show the user's location button
           ),
@@ -323,12 +324,12 @@ class _SearchScreenState extends State<SearchScreen> {
                               endTime: selectedEndTime,
                             );
 
-                            // Refresh visible vehicules after updating dates
+                            // Refresh visible vehicles after updating dates
                             _filterVisibleVehicules();
                           },
                           onCancelClick: () {
                             rentalPeriodProvider.clearDates(); // Clear dates if canceled
-                            _filterVisibleVehicules(); // Refresh visible vehicules
+                            _filterVisibleVehicules(); // Refresh visible vehicles
                           },
                         );
                       },
@@ -339,17 +340,17 @@ class _SearchScreenState extends State<SearchScreen> {
             ),
           ),
 
-          // List of visible vehicules at the bottom of the screen
+          // List of visible vehicles at the bottom of the screen
           Positioned(
             bottom: 20.0,
             left: 0,
             right: 0,
-            height: 220, // Fixed height for vehicule list
+            height: 220, // Fixed height for vehicle list
             child: VehiculesListWidget(
-              vehicules: visibleCars, // Show filtered vehicules
-              isLoading: _loadingCars, // Show loading spinner if vehicules are still loading
+              vehicles: visibleCars, // Show filtered vehicles
+              isLoading: _loadingCars, // Show loading spinner if vehicles are still loading
               onCarTap: (LatLng location) {
-                _animateOrMoveToLocation(location, mapZoomLevel); // Move map to the selected vehicule
+                _animateOrMoveToLocation(location, mapZoomLevel); // Move map to the selected vehicle
               },
             ),
           ),

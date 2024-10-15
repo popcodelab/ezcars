@@ -1,8 +1,10 @@
-import 'features/search/search_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'features/home/home_screen.dart';
-import 'features/home/services/impl/animal_service.dart';
+import 'package:ezcars/services/impl/location_service.dart';  // Import the LocationService
+import 'package:ezcars/services/impl/vehicle_service.dart';   // Import the VehicleService
+
+import 'features/search/search_screen.dart';
+import 'features/home/home_screen.dart';  // Import updated HomeScreen
 import 'features/profile_screen.dart';
 import 'features/settings/settings_screen.dart';
 
@@ -17,21 +19,34 @@ class _MainScreenState extends State<MainScreen> {
   // Index of the currently selected tab
   int _selectedIndex = 0;
 
-  // List of screens corresponding to each tab
-  final List<Widget> _screens = [
-    HomeScreen(animalService: AnimalService()), // Home screen with AnimalService dependency
-    const SearchScreen(), // Search screen
-    const SettingsScreen(), // Settings screen
-    const ProfileScreen(), // Profile screen
-  ];
+  late List<Widget> _screens;
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Initialize services
+    final vehicleService = VehicleService();  // Initialize VehicleService
+    final locationService = LocationService(); // Initialize LocationService
+
+    // List of screens corresponding to each tab
+    _screens = [
+      HomeScreen(
+        vehicleService: vehicleService,
+        locationService: locationService,
+      ),  // Home screen with VehicleService and LocationService dependency
+      const SearchScreen(),  // Search screen
+      const SettingsScreen(),  // Settings screen
+      const ProfileScreen(),  // Profile screen
+    ];
+  }
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       // The body contains the screen corresponding to the selected index
       body: SafeArea(
-        child: _screens[_selectedIndex], // Display the current screen
+        child: _screens[_selectedIndex],  // Display the current screen
       ),
       // BottomNavigationBar used to switch between different screens
       bottomNavigationBar: _buildBottomNavigationBar(context),
@@ -41,32 +56,32 @@ class _MainScreenState extends State<MainScreen> {
   // Method to handle tab selection in BottomNavigationBar
   void _onDestinationSelected(int index) {
     setState(() {
-      _selectedIndex = index; // Update the selected index
+      _selectedIndex = index;  // Update the selected index
     });
   }
 
   // Method to build the BottomNavigationBar
   BottomNavigationBar _buildBottomNavigationBar(BuildContext context) {
     return BottomNavigationBar(
-      currentIndex: _selectedIndex, // Set the current active tab
-      onTap: _onDestinationSelected, // Call the method to handle tab switching
-      type: BottomNavigationBarType.fixed, // Ensure the bar items are always visible
+      currentIndex: _selectedIndex,  // Set the current active tab
+      onTap: _onDestinationSelected,  // Call the method to handle tab switching
+      type: BottomNavigationBarType.fixed,  // Ensure the bar items are always visible
       items: [
         _buildBottomNavigationBarItem(
           icon: Icons.home,
-          label: AppLocalizations.of(context)?.nav_home ?? 'Home', // Fallback to 'Home' if localization fails
+          label: AppLocalizations.of(context)?.nav_home ?? 'Home',  // Fallback to 'Home' if localization fails
         ),
         _buildBottomNavigationBarItem(
           icon: Icons.search,
-          label: AppLocalizations.of(context)?.nav_search ?? 'Search', // Fallback to 'Search' if localization fails
+          label: AppLocalizations.of(context)?.nav_search ?? 'Search',  // Fallback to 'Search' if localization fails
         ),
         _buildBottomNavigationBarItem(
           icon: Icons.settings,
-          label: AppLocalizations.of(context)?.nav_settings ?? 'Settings', // Fallback to 'Settings' if localization fails
+          label: AppLocalizations.of(context)?.nav_settings ?? 'Settings',  // Fallback to 'Settings' if localization fails
         ),
         _buildBottomNavigationBarItem(
           icon: Icons.person,
-          label: AppLocalizations.of(context)?.nav_profile ?? 'Profile', // Fallback to 'Profile' if localization fails
+          label: AppLocalizations.of(context)?.nav_profile ?? 'Profile',  // Fallback to 'Profile' if localization fails
         ),
       ],
     );
@@ -78,8 +93,8 @@ class _MainScreenState extends State<MainScreen> {
     required String label,
   }) {
     return BottomNavigationBarItem(
-      icon: Icon(icon), // Icon for the tab
-      label: label, // Label for the tab
+      icon: Icon(icon),  // Icon for the tab
+      label: label,  // Label for the tab
     );
   }
 }

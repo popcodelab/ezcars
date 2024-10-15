@@ -2,18 +2,18 @@ import 'package:ezcars/extensions/string_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-import '../models/vehicule.dart';
+import '../../../models/vehicle.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class VehiculesListWidget extends StatelessWidget {
-  final List<Vehicule> vehicules;
+  final List<Vehicle> vehicles;
   final bool isLoading;
   final Function(LatLng) onCarTap;
 
   const VehiculesListWidget({
     super.key,
-    required this.vehicules,
+    required this.vehicles,
     required this.isLoading,
     required this.onCarTap,
   });
@@ -21,27 +21,27 @@ class VehiculesListWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (isLoading) {
-      // Show loading indicator if vehicules are still being fetched
+      // Show loading indicator if vehicles are still being fetched
       return const Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             CircularProgressIndicator(),
             SizedBox(height: 10),
-            Text("Loading available vehicules..."),
+            Text("Loading available vehicles..."),
           ],
         ),
       );
     }
 
-    if (vehicules.isEmpty) {
-      // Show message if no vehicules are available
+    if (vehicles.isEmpty) {
+      // Show message if no vehicles are available
       return Container(
         height: 20, // Set a specific height for the container
         color: Colors.white.withOpacity(0.8), // Set background color with 80% opacity
         child: Center(
           child: Text(
-            AppLocalizations.of(context)!.no_cars_available.capitalize(),
+            AppLocalizations.of(context)!.no_vehicles_available.capitalize(),
             style: const TextStyle(fontSize: 14),
             textAlign: TextAlign.center, // Center align the text
           ),
@@ -49,14 +49,14 @@ class VehiculesListWidget extends StatelessWidget {
       );
     }
 
-    // Display vehicule cards as horizontal list
+    // Display vehicle cards as horizontal list
     return ListView.builder(
       scrollDirection: Axis.horizontal,
-      itemCount: vehicules.length,
+      itemCount: vehicles.length,
       itemBuilder: (context, index) {
         return GestureDetector(
           onTap: () {
-            onCarTap(LatLng(vehicules[index].lat, vehicules[index].lng)); // Call the function passed from parent
+            onCarTap(LatLng(vehicles[index].latitude, vehicles[index].longitude)); // Call the function passed from parent
           },
           child: Container(
             width: 250,
@@ -74,7 +74,7 @@ class VehiculesListWidget extends StatelessWidget {
                         topRight: Radius.circular(15.0),
                       ),
                       child: Image.asset(
-                        vehicules[index].image,
+                        vehicles[index].imageUrl,
                         fit: BoxFit.cover,
                         width: double.infinity,
                         height: 150,
@@ -87,15 +87,15 @@ class VehiculesListWidget extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          vehicules[index].name,
+                          vehicles[index].model,
                           style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                         ),
                         const SizedBox(height: 5),
-                        Text(vehicules[index].price),
+                        Text(vehicles[index].price),
                         const SizedBox(height: 5),
-                        Text(vehicules[index].location),
+                        Text(vehicles[index].location),
                         const SizedBox(height: 5),
-                        Text(vehicules[index].distance),
+                        Text(vehicles[index].distance),
                       ],
                     ),
                   ),
