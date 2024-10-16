@@ -10,7 +10,7 @@ base class Vehicle {
   final double latitude;
   final double longitude;
   final List<UnavailabilityPeriod> unavailabilityPeriods;
-
+  final String type;
   Vehicle({
     required this.model,
     required this.imageUrl,
@@ -20,5 +20,6 @@ base class Vehicle {
     required this.latitude,
     required this.longitude,
     this.unavailabilityPeriods = const [], // Default to empty list
+    required this.type // electric, gas, or any other type.
   });
 }

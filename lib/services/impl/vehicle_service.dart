@@ -22,15 +22,7 @@ class VehicleService implements IVehicleService {
     // await Future.delayed(const Duration(seconds: 2));
 
     return [
-      Vehicle(
-        model: 'Tesla Model 3',
-        imageUrl: 'assets/images/vehicles/cars/tesla.jpeg',
-        price: '\$45/day',
-        location: 'Downtown Garage',
-        distance: '2.5 miles',
-        latitude: 34.0522,
-        longitude: -118.2437,
-      ),
+
       Vehicle(
         model: 'BMW i8',
         imageUrl: 'assets/images/vehicles/cars/bmw.jpeg',
@@ -39,6 +31,7 @@ class VehicleService implements IVehicleService {
         distance: '4.8 miles',
         latitude: 34.0530,
         longitude: -118.2420,
+        type: 'gas', // Gas-powered vehicle
       ),
       Vehicle(
         model: 'Audi A7',
@@ -48,6 +41,7 @@ class VehicleService implements IVehicleService {
         distance: '3.2 miles',
         latitude: 12.9122285,
         longitude: 100.8640967,
+        type: 'gas', // Gas-powered vehicle
         unavailabilityPeriods: [
           UnavailabilityPeriod(
             startDate: DateTime(2024, 11, 1),
@@ -65,6 +59,7 @@ class VehicleService implements IVehicleService {
         distance: '3.2 miles',
         latitude: 12.9222285,
         longitude: 100.8640967,
+        type: 'gas', // Gas-powered vehicle
       ),
       Vehicle(
         model: 'Toyota Hilux',
@@ -74,6 +69,7 @@ class VehicleService implements IVehicleService {
         distance: '3.2 miles',
         latitude: 37.4519983,
         longitude: -122.1234,
+        type: 'gas', // Gas-powered vehicle
         unavailabilityPeriods: [
           UnavailabilityPeriod(
             startDate: DateTime(2024, 11, 1),
@@ -91,6 +87,7 @@ class VehicleService implements IVehicleService {
         distance: '3.2 miles',
         latitude: 37.4219983,
         longitude: -122.084,
+        type: 'gas', // Gas-powered vehicle
         unavailabilityPeriods: [
           UnavailabilityPeriod(
             startDate: DateTime(2024, 10, 15),
@@ -105,6 +102,16 @@ class VehicleService implements IVehicleService {
             endTime: const TimeOfDay(hour: 17, minute: 0),
           ),
         ],
+      ),
+      Vehicle(
+        model: 'Tesla Model 3',
+        imageUrl: 'assets/images/vehicles/cars/tesla.jpeg',
+        price: '\$45/day',
+        location: 'Downtown Garage',
+        distance: '2.5 miles',
+        latitude: 37.409983,
+        longitude: -122.060,
+        type: 'electric', // Electric vehicle
       ),
     ];
   }

@@ -26,6 +26,8 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'widgets/vehicules_list_widget.dart';
 
+import 'dart:ui' as ui;
+
 /// This screen shows a Google Map displaying vehicle markers and allows the user to
 /// filter vehicles based on their location and rental period.
 class SearchScreen extends StatefulWidget {
@@ -69,21 +71,61 @@ class _SearchScreenState extends State<SearchScreen> {
   }
 
   /// Fetches vehicle data from the map service and adds vehicle markers to the map.
+  /// Converts a Material Icon to a BitmapDescriptor, with adjustable size and color.
+  Future<BitmapDescriptor> _bitmapDescriptorFromIconData(IconData iconData, Color color, double size) async {
+    final pictureRecorder = ui.PictureRecorder();
+    final canvas = Canvas(pictureRecorder);
+
+    final textPainter = TextPainter(textDirection: TextDirection.ltr);
+    textPainter.text = TextSpan(
+      text: String.fromCharCode(iconData.codePoint),
+      style: TextStyle(
+        fontSize: size,
+        fontFamily: iconData.fontFamily,
+        color: color,
+      ),
+    );
+    textPainter.layout();
+    textPainter.paint(canvas, const Offset(0.0, 0.0));
+
+    final picture = pictureRecorder.endRecording();
+    final img = await picture.toImage(size.toInt(), size.toInt());
+    final byteData = await img.toByteData(format: ui.ImageByteFormat.png);
+    final pngBytes = byteData!.buffer.asUint8List();
+
+    return BitmapDescriptor.fromBytes(pngBytes);
+  }
+
+  /// Fetches vehicle data and applies different Material Icons as the marker icon based on vehicle type.
   Future<void> _fetchVehicules() async {
     try {
       final fetchedCars = await _mapService.fetchVehicules(); // Fetch vehicles using service
-      setState(() {
+
+      setState(() async {
         vehicles = fetchedCars; // Update the list of vehicles
         _loadingCars = false; // Set loading to false after data is loaded
 
-        // Create markers for each vehicle
-        markers.addAll(vehicles.map((vehicle) {
+        // Create markers for each vehicle using a different icon based on the vehicle type
+        markers.addAll(await Future.wait(vehicles.map((vehicle) async {
+          BitmapDescriptor vehicleIcon;
+
+          // Select icon based on vehicle type
+          if (vehicle.type == 'electric') {
+            vehicleIcon = await _bitmapDescriptorFromIconData(Icons.electric_car, Colors.green, 80.0);
+          } else if (vehicle.type == 'gas') {
+            vehicleIcon = await _bitmapDescriptorFromIconData(Icons.car_rental, Colors.blue, 80.0);
+          } else {
+            vehicleIcon = await _bitmapDescriptorFromIconData(Icons.directions_car, Colors.black, 80.0); // Default icon for other types
+          }
+
+          // Return a marker for each vehicle
           return Marker(
             markerId: MarkerId(vehicle.model), // Unique ID for each marker
             position: LatLng(vehicle.latitude, vehicle.longitude), // Position of the vehicle
-            infoWindow: InfoWindow(title: vehicle.model), // Info window with vehicle name
+            icon: vehicleIcon, // Set the custom icon based on vehicle type
+            infoWindow: InfoWindow(title: vehicle.model, snippet: vehicle.price), // Info window with model and price
           );
-        }));
+        }).toList()));
       });
     } catch (e) {
       setState(() {
@@ -92,6 +134,7 @@ class _SearchScreenState extends State<SearchScreen> {
       _showErrorSnackBar(AppLocalizations.of(context)!.error_fetching_vehicles); // Display error message
     }
   }
+
 
   /// Fetches the user's current location using the map service and updates the map.
   Future<void> _fetchUserLocation() async {

@@ -9,7 +9,6 @@ import '../../keys.dart'; // API keys
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class LocationService implements ILocationService {
-  Map<String, String> _locationCache = {}; // Cache for storing location results
 
   /// Consolidated function to check permissions and fetch the user's current location
   @override
