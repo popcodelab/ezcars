@@ -80,6 +80,9 @@
   "retry": "retry",
   "when": "when",
   "price": "price",
+  "distance": "distance",
+  "miles": "miles",
+  "kilometers": "kilometers",
   "choose_date_range": "Choose a date range",
   "error_fetching_location": "Error fetching location. Please try again.'",
   "@error_fetching_location": {
@@ -160,5 +163,13 @@
   "current_radius": "Current radius",
   "@current_radius": {
     "description": "Setting label for Current radius"
+  },
+  "distance_unit": "Distance unit",
+  "@distance_unit": {
+    "description": "Label for Distance unit'"
+  },
+  "current_unit": "Current unit",
+  "@current_unit": {
+    "description": "Label for Current unit'"
   }
 }

@@ -35,7 +35,8 @@ void main() {
         imageUrl: 'image_url',
         price: '\$100/day',
         location: 'Los Angeles',
-        distance: '5 miles away',
+        distance: 1.1,
+        type: 'gas',
         latitude: 34.5,
         longitude: -118.0, // Inside bounds
       );
@@ -72,7 +73,8 @@ void main() {
         imageUrl: 'image_url',
         price: '\$150/day',
         location: 'Santa Monica',
-        distance: '10 miles away',
+        distance: 10,
+        type: 'electric',
         latitude: 34.5,
         longitude: -118.0,
         unavailabilityPeriods: [unavailabilityPeriod],

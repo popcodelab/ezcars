@@ -8,6 +8,8 @@ import '../i_vehicle_service.dart';
 
 import 'dart:math'; // For distance calculations
 
+import 'dart:collection';
+
 /// Service that provides a list of available vehicles for rental.
 /// Implements the [IVehicleService] interface.
 class VehicleService implements IVehicleService {
@@ -21,14 +23,14 @@ class VehicleService implements IVehicleService {
     // Uncomment the following line to simulate a network delay.
     // await Future.delayed(const Duration(seconds: 2));
 
-    return [
+    var result = [
 
       Vehicle(
         model: 'BMW i8',
         imageUrl: 'assets/images/vehicles/cars/bmw.jpeg',
         price: '\$120/day',
         location: 'Uptown Parking Lot',
-        distance: '4.8 miles',
+        distance: 0,
         latitude: 34.0530,
         longitude: -118.2420,
         type: 'gas', // Gas-powered vehicle
@@ -38,7 +40,7 @@ class VehicleService implements IVehicleService {
         imageUrl: 'assets/images/vehicles/cars/audi.jpg',
         price: '\$80/day',
         location: 'Midtown Garage',
-        distance: '3.2 miles',
+        distance: 0,
         latitude: 12.9122285,
         longitude: 100.8640967,
         type: 'gas', // Gas-powered vehicle
@@ -56,7 +58,7 @@ class VehicleService implements IVehicleService {
         imageUrl: 'assets/images/vehicles/cars/g63.png',
         price: '\$80/day',
         location: 'Midtown Garage',
-        distance: '3.2 miles',
+        distance: 0,
         latitude: 12.9222285,
         longitude: 100.8640967,
         type: 'gas', // Gas-powered vehicle
@@ -66,7 +68,7 @@ class VehicleService implements IVehicleService {
         imageUrl: 'assets/images/vehicles/cars/hilux.jpg',
         price: '\$180/day',
         location: 'Midtown Garage',
-        distance: '3.2 miles',
+        distance: 0,
         latitude: 37.4519983,
         longitude: -122.1234,
         type: 'gas', // Gas-powered vehicle
@@ -84,7 +86,7 @@ class VehicleService implements IVehicleService {
         imageUrl: 'assets/images/vehicles/cars/mg5.jpg',
         price: '\$180/day',
         location: 'Midtown Garage',
-        distance: '3.2 miles',
+        distance: 0,
         latitude: 37.4219983,
         longitude: -122.084,
         type: 'gas', // Gas-powered vehicle
@@ -108,34 +110,55 @@ class VehicleService implements IVehicleService {
         imageUrl: 'assets/images/vehicles/cars/tesla.jpeg',
         price: '\$45/day',
         location: 'Downtown Garage',
-        distance: '2.5 miles',
+        distance: 0,
         latitude: 37.409983,
         longitude: -122.060,
         type: 'electric', // Electric vehicle
       ),
     ];
+    return result;
   }
 
-  /// Filters vehicles by proximity to the user's location within a given radius.
-  @override
-  Future<List<Vehicle>> filterVehiclesByProximity(
-      List<Vehicle> vehicles, Position userPosition, WalkingRadiusProvider radiusProvider) async {
-    final double radius = radiusProvider.walkingRadius; // Correctly access walkingRadius from the provider
+  /// Calculate distances for all vehicles from the user's current location.
+  Future<List<Vehicle>> calculateVehicleDistances(
+      List<Vehicle> vehicles, Position userPosition, {String unit = 'miles'}) async {
 
-    return vehicles.where((vehicle) {
-      final distance = _calculateDistance(
+    return vehicles.map((vehicle) {
+      double distanceInMeters = _calculateDistance(
         userPosition.latitude,
         userPosition.longitude,
         vehicle.latitude,
         vehicle.longitude,
       );
-      return distance <= radius;
+
+      vehicle.distance = _convertDistance(distanceInMeters, unit); // Set the distance in the required unit
+      return vehicle;
     }).toList();
   }
 
-  /// Calculate the distance between two lat/lon coordinates using the Haversine formula
+  /// Filters vehicles based on proximity and returns only those within the walking radius.
+  Future<List<Vehicle>> filterVehiclesByProximity(
+      List<Vehicle> vehicles, Position userPosition, WalkingRadiusProvider radiusProvider, {String unit = 'miles'}) async {
+
+    double radius = radiusProvider.walkingRadius;
+
+    return vehicles.where((vehicle) {
+      double distanceInMeters = _calculateDistance(
+        userPosition.latitude,
+        userPosition.longitude,
+        vehicle.latitude,
+        vehicle.longitude,
+      );
+
+      vehicle.distance = _convertDistance(distanceInMeters, unit); // Calculate distance
+
+      return distanceInMeters <= radius; // Filter by radius
+    }).toList();
+  }
+
+  /// Helper function to calculate the distance between two points using Haversine formula
   double _calculateDistance(double lat1, double lon1, double lat2, double lon2) {
-    const double earthRadiusMeters = 6371000; // Radius of the Earth in meters
+    const double earthRadiusMeters = 6371000;
     final double dLat = _degreesToRadians(lat2 - lat1);
     final double dLon = _degreesToRadians(lon2 - lon1);
 
@@ -143,10 +166,20 @@ class VehicleService implements IVehicleService {
         cos(_degreesToRadians(lat1)) * cos(_degreesToRadians(lat2)) *
             sin(dLon / 2) * sin(dLon / 2);
     final double c = 2 * atan2(sqrt(a), sqrt(1 - a));
-    return earthRadiusMeters * c; // Distance in meters
+    return earthRadiusMeters * c;
   }
 
-  /// Helper function to convert degrees to radians
+  /// Convert meters to the desired unit (miles or kilometers)
+  double _convertDistance(double distanceInMeters, String unit) {
+    if (unit == 'miles') {
+      return distanceInMeters / 1609.34;
+    } else if (unit == 'kilometers') {
+      return distanceInMeters / 1000;
+    }
+    return distanceInMeters; // Default to meters if unit not specified
+  }
+
+  /// Convert degrees to radians
   double _degreesToRadians(double degrees) {
     return degrees * pi / 180;
   }

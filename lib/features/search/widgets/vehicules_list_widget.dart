@@ -95,7 +95,7 @@ class VehiculesListWidget extends StatelessWidget {
                         const SizedBox(height: 5),
                         Text(vehicles[index].location),
                         const SizedBox(height: 5),
-                        Text(vehicles[index].distance),
+                        Text(vehicles[index].distance.toStringAsFixed(1)),
                       ],
                     ),
                   ),

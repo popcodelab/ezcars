@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'features/search/providers/recent_places_provider.dart';
 import 'features/search/providers/rental_period_provider.dart';
+import 'providers/distance_unit_provider.dart';
 import 'providers/theme_provider.dart';
 import 'providers/locale_provider.dart';
 import 'main_screen.dart';
@@ -28,6 +29,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => RentalPeriodProvider()),
         ChangeNotifierProvider(create: (_) => RecentPlacesProvider()),
         ChangeNotifierProvider(create: (_) => WalkingRadiusProvider()), // Add WalkingRadiusProvider
+        ChangeNotifierProvider(create: (_) => DistanceUnitProvider()), // Provide the DistanceUnitProvider
       ],
       child: Consumer2<LocaleProvider, ThemeProvider>(
         builder: (context, localeProvider, themeProvider, child) {

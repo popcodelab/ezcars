@@ -6,7 +6,7 @@ base class Vehicle {
   final String imageUrl;
   final String price;
   final String location;
-  final String distance;
+  double distance;
   final double latitude;
   final double longitude;
   final List<UnavailabilityPeriod> unavailabilityPeriods;

@@ -80,6 +80,9 @@
   "retry": "réessayer",
   "when": "quand",
   "price": "prix",
+  "distance": "distance",
+  "miles": "miles",
+  "kilometers": "kilomètres",
   "change_locale_title": "Change la langue de l'application",
   "@change_locale_title": {
     "description": "Label for the language selection destination"
@@ -163,5 +166,13 @@
   "current_radius": "Rayon actuel",
   "@current_radius": {
     "description": "Setting label for Current radius"
+  },
+  "distance_unit": "Unité de distance",
+  "@distance_unit": {
+    "description": "Label for Distance unit'"
+  },
+  "current_unit": "unité actuelle",
+  "@current_unit": {
+    "description": "Label for Current unit'"
   }
 }
