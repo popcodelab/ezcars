@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart'; // For LatLng class
 import 'package:ezcars/extensions/string_extensions.dart';
 import 'package:ezcars/models/vehicle.dart';
+import 'package:provider/provider.dart';
+import '../../../providers/distance_unit_provider.dart';
 import 'vehicle_details.dart';
 import 'package:ezcars/services/i_location_service.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -11,10 +13,10 @@ class VehicleListItem extends StatelessWidget {
   final bool isSelected;
   final VoidCallback onTap;
   final ILocationService locationService;
-  final String distanceUnit;
+  String distanceUnit;
   final Function(LatLng) onDoubleTapNavigate; // Function to handle double-tap and navigate
 
-  const VehicleListItem({
+  VehicleListItem({
     super.key,
     required this.vehicle,
     required this.isSelected,
@@ -58,9 +60,15 @@ class VehicleListItem extends StatelessWidget {
                   Text(
                     '${AppLocalizations.of(context)?.price.capitalize() ?? 'Price'}: ${vehicle.price}',
                   ),
-                  Text(
-                    '${AppLocalizations.of(context)?.distance.capitalize() ?? 'Distance'}: '
-                        '${vehicle.distance.toStringAsFixed(2)} $distanceUnit',
+                  // Use Consumer to listen for changes in DistanceUnitProvider
+                  Consumer<DistanceUnitProvider>(
+                    builder: (context, distanceUnitProvider, child) {
+                      final displayUnit = (distanceUnitProvider.distanceUnit == 'kilometers') ? 'km' : 'miles';
+                      return Text(
+                        '${AppLocalizations.of(context)?.distance.capitalize() ?? 'Distance'}: '
+                            '${vehicle.distance.toStringAsFixed(2)} $displayUnit',
+                      );
+                    },
                   ),
                 ],
               ),
