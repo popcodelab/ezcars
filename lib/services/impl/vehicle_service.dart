@@ -8,7 +8,6 @@ import '../i_vehicle_service.dart';
 
 import 'dart:math'; // For distance calculations
 
-import 'dart:collection';
 
 /// Service that provides a list of available vehicles for rental.
 /// Implements the [IVehicleService] interface.

@@ -31,13 +31,14 @@ import 'dart:ui' as ui;
 /// This screen shows a Google Map displaying vehicle markers and allows the user to
 /// filter vehicles based on their location and rental period.
 class SearchScreen extends StatefulWidget {
-  const SearchScreen({super.key});
+  final LatLng? vehicleLocation; // Add this to accept a vehicle's location
+  const SearchScreen({Key? key, this.vehicleLocation}) : super(key: key);
 
   @override
-  _SearchScreenState createState() => _SearchScreenState();
+  SearchScreenState createState() => SearchScreenState();
 }
 
-class _SearchScreenState extends State<SearchScreen> {
+class SearchScreenState extends State<SearchScreen> {
   GoogleMapController? mapController; // Controller for Google Map
   final Completer<GoogleMapController> _controller = Completer(); // Async controller for map
 
@@ -68,6 +69,13 @@ class _SearchScreenState extends State<SearchScreen> {
 
     _fetchVehicules(); // Fetch vehicle data on initialization
     _fetchUserLocation(); // Fetch user location on initialization
+
+    // If initial vehicle location is provided, move the map to that location
+    if (widget.vehicleLocation != null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _animateOrMoveToLocation(widget.vehicleLocation!, mapZoomLevel, instantMove: true);
+      });
+    }
   }
 
   /// Fetches vehicle data from the map service and adds vehicle markers to the map.
@@ -234,6 +242,20 @@ class _SearchScreenState extends State<SearchScreen> {
     }
   }
 
+  Future<void> animateOrMoveToVehicleLocation(LatLng target, {bool instantMove = false}) async {
+    final controller = await _controller.future;
+
+    if (instantMove) {
+      controller.moveCamera(
+        CameraUpdate.newLatLngZoom(target, mapZoomLevel), // Move camera without animation
+      );
+    } else {
+      controller.animateCamera(
+        CameraUpdate.newLatLngZoom(target, mapZoomLevel), // Animate camera movement
+      );
+    }
+  }
+
   /// Displays an error snackbar with a given message.
   void _showErrorSnackBar(String message) {
     if (mounted) {
@@ -287,7 +309,8 @@ class _SearchScreenState extends State<SearchScreen> {
               }
             },
             initialCameraPosition: CameraPosition(
-              target: _currentLatLng ?? const LatLng(34.0522, -118.2437), // Default to LA if no location
+              target: widget.vehicleLocation ??
+                  _currentLatLng ?? const LatLng(34.0522, -118.2437), // Default to LA or the selected vehicle location
               zoom: mapZoomLevel,
             ),
             onCameraMove: (position) {

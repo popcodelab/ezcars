@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart'; // For LatLng class
 import '../../models/vehicle.dart';
 import '../../providers/walking_radiius_provider.dart';
 import '../../providers/distance_unit_provider.dart';
@@ -12,11 +13,13 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class HomeScreen extends StatefulWidget {
   final IVehicleService vehicleService;
   final ILocationService locationService;
+  final Function(LatLng) onVehicleDoubleTap;  // Define the onVehicleDoubleTap callback
 
   const HomeScreen({
     super.key,
     required this.vehicleService,
     required this.locationService,
+    required this.onVehicleDoubleTap, // Accept the double-tap callback
   });
 
   @override
@@ -175,6 +178,9 @@ class _HomeScreenState extends State<HomeScreen> {
               onTap: () => _toggleVehicleDetails(index), // Toggle details when tapped
               locationService: widget.locationService, // Pass locationService to each list item
               distanceUnit: Provider.of<DistanceUnitProvider>(context, listen: false).distanceUnit, // Pass distance unit from provider
+              onDoubleTapNavigate: (LatLng vehicleLocation) {
+                widget.onVehicleDoubleTap(vehicleLocation); // Trigger double-tap navigation callback from MainScreen
+              },
             );
           },
         ),

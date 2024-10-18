@@ -7,6 +7,7 @@ import 'features/search/search_screen.dart';
 import 'features/home/home_screen.dart';  // Import updated HomeScreen
 import 'features/profile_screen.dart';
 import 'features/settings/settings_screen.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart'; // For LatLng class
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -18,27 +19,45 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   // Index of the currently selected tab
   int _selectedIndex = 0;
+  LatLng? _vehicleLocation;  // Store the vehicle location to pass to SearchScreen
+  final GlobalKey<SearchScreenState> _searchScreenKey = GlobalKey<SearchScreenState>(); // Add GlobalKey for SearchScreen
 
   late List<Widget> _screens;
+  late VehicleService vehicleService;
+  late LocationService locationService;
 
   @override
   void initState() {
     super.initState();
 
     // Initialize services
-    final vehicleService = VehicleService();  // Initialize VehicleService
-    final locationService = LocationService(); // Initialize LocationService
+    vehicleService = VehicleService();  // Initialize VehicleService
+    locationService = LocationService(); // Initialize LocationService
 
     // List of screens corresponding to each tab
     _screens = [
       HomeScreen(
         vehicleService: vehicleService,
         locationService: locationService,
+        onVehicleDoubleTap: _navigateToSearchScreen, // Pass the navigation callback
       ),  // Home screen with VehicleService and LocationService dependency
-      const SearchScreen(),  // Search screen
+      SearchScreen(
+        key: _searchScreenKey, // Assign GlobalKey to SearchScreen
+        vehicleLocation: _vehicleLocation, // Pass the vehicle location to SearchScreen
+      ),  // Search screen
       const SettingsScreen(),  // Settings screen
       const ProfileScreen(),  // Profile screen
     ];
+  }
+
+  /// Method to navigate to the SearchScreen with a vehicle's location
+  void _navigateToSearchScreen(LatLng vehicleLocation) {
+    setState(() {
+      _vehicleLocation = vehicleLocation; // Set the vehicle location for SearchScreen
+      _selectedIndex = 1; // Switch to SearchScreen tab
+    });
+    // Use the GlobalKey to trigger the focus method in SearchScreen
+    _searchScreenKey.currentState?.animateOrMoveToVehicleLocation(vehicleLocation);
   }
 
   @override
@@ -46,7 +65,10 @@ class _MainScreenState extends State<MainScreen> {
     return Scaffold(
       // The body contains the screen corresponding to the selected index
       body: SafeArea(
-        child: _screens[_selectedIndex],  // Display the current screen
+        child: IndexedStack(
+          index: _selectedIndex,
+          children: _screens,  // Use IndexedStack to maintain state of all screens
+        ),
       ),
       // BottomNavigationBar used to switch between different screens
       bottomNavigationBar: _buildBottomNavigationBar(context),
