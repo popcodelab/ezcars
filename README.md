@@ -21,7 +21,6 @@
   - [8. Localization (l10n)](#8-localization-l10n)
   - [Technical Overview](#technical-overview)
   - [Getting Started](#getting-started)
-  - [Getting Started](#getting-started-1)
     - [1. Clone the Repository](#1-clone-the-repository)
     - [2. Navigate to the Project Directory](#2-navigate-to-the-project-directory)
     - [3. Install Dependencies](#3-install-dependencies)
@@ -154,8 +153,8 @@ class APIKeys {
 To use location services and display Google Maps, you must configure the appropriate permissions for both Android and iOS platforms.
 
 #### Android:
-1. Open the `android/app/src/main/AndroidManifest.xml` file.
-2. Add the following permissions inside the `<manifest>` tag to enable location access:
+#### 1. Open the `android/app/src/main/AndroidManifest.xml` file.
+#### 2. Add the following permissions inside the `<manifest>` tag to enable location access:
 
 ```xml
 <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -163,7 +162,7 @@ To use location services and display Google Maps, you must configure the appropr
 <uses-feature android:name="android.hardware.location.gps" />
 ```
 
-### iOS
+#### iOS
 
 To use location services and display Google Maps on iOS, you need to configure certain permissions and set up the Google Maps API key.
 
