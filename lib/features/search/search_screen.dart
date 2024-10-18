@@ -240,28 +240,34 @@ class SearchScreenState extends State<SearchScreen> {
   }
 
   /// Moves or animates the camera to the target location on the map.
+  bool _isAnimatingCamera = false; // Add this flag
+  LatLng? _lastLatLng;
+  double? _lastZoomLevel;
+
   Future<void> _animateOrMoveToLocation(LatLng target, double zoomLevel, {bool instantMove = false}) async {
+    // Only move the camera if the target location or zoom level is different from the last
+    if (_lastLatLng == target && _lastZoomLevel == zoomLevel) {
+      return;
+    }
+
+    _lastLatLng = target;
+    _lastZoomLevel = zoomLevel;
+
+    if (_isAnimatingCamera || !mounted) return; // Prevent multiple simultaneous camera movements or unmounted calls
+
+    _isAnimatingCamera = true; // Set the flag to prevent further movements
+
     final controller = await _controller.future;
 
-    if (mapController != null && !instantMove) {
-      controller.animateCamera(CameraUpdate.newLatLngZoom(target, zoomLevel));
-    } else if (instantMove) {
+    if (instantMove) {
       controller.moveCamera(CameraUpdate.newLatLngZoom(target, zoomLevel));
+    } else {
+      controller.animateCamera(CameraUpdate.newLatLngZoom(target, zoomLevel));
     }
+
+    await Future.delayed(const Duration(milliseconds: 500)); // Delay to let the animation complete
+    _isAnimatingCamera = false; // Reset the flag after the movement
   }
-  // Future<void> _animateOrMoveToLocation(LatLng target, double zoomLevel, {bool instantMove = false}) async {
-  //   final controller = await _controller.future;
-  //
-  //   if (instantMove) {
-  //     controller.moveCamera(
-  //       CameraUpdate.newLatLngZoom(target, zoomLevel), // Move camera without animation
-  //     );
-  //   } else {
-  //     controller.animateCamera(
-  //       CameraUpdate.newLatLngZoom(target, zoomLevel), // Animate camera movement
-  //     );
-  //   }
-  // }
 
   Future<void> animateOrMoveToVehicleLocation(LatLng target, {bool instantMove = false}) async {
     final controller = await _controller.future;
@@ -306,11 +312,12 @@ class SearchScreenState extends State<SearchScreen> {
       // Move the map to the new location
       if (mapController != null) {
         _animateOrMoveToLocation(_currentLatLng!, mapZoomLevel, instantMove: true);
+        // Update circles and visible vehicles when location changes
+        _updateCircles(mapZoomLevel);
+        _filterVisibleVehicules();
       }
 
-      // Update circles and visible vehicles when location changes
-      _updateCircles(mapZoomLevel);
-      _filterVisibleVehicules();
+
     }
 
     return Scaffold(
