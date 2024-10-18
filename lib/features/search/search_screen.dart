@@ -101,7 +101,7 @@ class SearchScreenState extends State<SearchScreen> {
     final byteData = await img.toByteData(format: ui.ImageByteFormat.png);
     final pngBytes = byteData!.buffer.asUint8List();
 
-    return BitmapDescriptor.fromBytes(pngBytes);
+    return BitmapDescriptor.bytes(pngBytes);
   }
 
   /// Fetches vehicle data and applies different Material Icons as the marker icon based on vehicle type.
@@ -220,7 +220,7 @@ class SearchScreenState extends State<SearchScreen> {
             markerId: const MarkerId('customLabel'), // Unique ID for the label marker
             position: LatLng(_currentLatLng!.latitude + (walkingRadius / 111000.0),
                 _currentLatLng!.longitude), // Position above user's location
-            icon: BitmapDescriptor.fromBytes(markerIcon), // Custom icon
+            icon: BitmapDescriptor.bytes(markerIcon), // Custom icon
           ),
         );
       });
