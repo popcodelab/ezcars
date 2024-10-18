@@ -148,13 +148,13 @@ class _HomeScreenState extends State<HomeScreen> {
                   }
                 },
                 itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
-                  const PopupMenuItem<String>(
+                  PopupMenuItem<String>(
                     value: 'miles',
-                    child: Text('Miles'),
+                    child: Text(AppLocalizations.of(context)?.miles??'miles'),
                   ),
-                  const PopupMenuItem<String>(
+                  PopupMenuItem<String>(
                     value: 'kilometers',
-                    child: Text('Kilometers'),
+                    child: Text(AppLocalizations.of(context)?.kilometers??'kilometers'),
                   ),
                 ],
               );

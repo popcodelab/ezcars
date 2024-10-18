@@ -67,16 +67,28 @@ class SearchScreenState extends State<SearchScreen> {
       circlesService: MapTransparentCircleService(),
     );
 
-    _fetchVehicules(); // Fetch vehicle data on initialization
-    _fetchUserLocation(); // Fetch user location on initialization
-
-    // If initial vehicle location is provided, move the map to that location
-    if (widget.vehicleLocation != null) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        _animateOrMoveToLocation(widget.vehicleLocation!, mapZoomLevel, instantMove: true);
-      });
-    }
+    _initData(); // Initialize data (fetch vehicles and location)
   }
+
+  /// Initializes data when the screen is first opened or after coming back from another screen.
+  void _initData() {
+    _fetchVehicules();
+    _fetchUserLocation();
+
+    // Delay camera movement to avoid interruptions after returning from another screen
+    // if (widget.vehicleLocation != null) {
+    //   Future.delayed(const Duration(milliseconds: 500), () {
+    //     _animateOrMoveToLocation(widget.vehicleLocation!, mapZoomLevel, instantMove: true);
+    //   });
+    // }
+  }
+
+  void _onCameraMove(CameraPosition position) {
+    setState(() {
+      mapZoomLevel = position.zoom;
+    });
+  }
+
 
   /// Fetches vehicle data from the map service and adds vehicle markers to the map.
   /// Converts a Material Icon to a BitmapDescriptor, with adjustable size and color.
@@ -231,16 +243,25 @@ class SearchScreenState extends State<SearchScreen> {
   Future<void> _animateOrMoveToLocation(LatLng target, double zoomLevel, {bool instantMove = false}) async {
     final controller = await _controller.future;
 
-    if (instantMove) {
-      controller.moveCamera(
-        CameraUpdate.newLatLngZoom(target, zoomLevel), // Move camera without animation
-      );
-    } else {
-      controller.animateCamera(
-        CameraUpdate.newLatLngZoom(target, zoomLevel), // Animate camera movement
-      );
+    if (mapController != null && !instantMove) {
+      controller.animateCamera(CameraUpdate.newLatLngZoom(target, zoomLevel));
+    } else if (instantMove) {
+      controller.moveCamera(CameraUpdate.newLatLngZoom(target, zoomLevel));
     }
   }
+  // Future<void> _animateOrMoveToLocation(LatLng target, double zoomLevel, {bool instantMove = false}) async {
+  //   final controller = await _controller.future;
+  //
+  //   if (instantMove) {
+  //     controller.moveCamera(
+  //       CameraUpdate.newLatLngZoom(target, zoomLevel), // Move camera without animation
+  //     );
+  //   } else {
+  //     controller.animateCamera(
+  //       CameraUpdate.newLatLngZoom(target, zoomLevel), // Animate camera movement
+  //     );
+  //   }
+  // }
 
   Future<void> animateOrMoveToVehicleLocation(LatLng target, {bool instantMove = false}) async {
     final controller = await _controller.future;
@@ -305,7 +326,9 @@ class SearchScreenState extends State<SearchScreen> {
               }
               mapController = controller;
               if (_currentLatLng != null) {
-                _animateOrMoveToLocation(_currentLatLng!, mapZoomLevel, instantMove: true);
+                Future.delayed(const Duration(milliseconds: 500), () {
+                  _animateOrMoveToLocation(_currentLatLng!, mapZoomLevel, instantMove: true);
+                });
               }
             },
             initialCameraPosition: CameraPosition(
@@ -313,11 +336,12 @@ class SearchScreenState extends State<SearchScreen> {
                   _currentLatLng ?? const LatLng(34.0522, -118.2437), // Default to LA or the selected vehicle location
               zoom: mapZoomLevel,
             ),
-            onCameraMove: (position) {
-              setState(() {
-                mapZoomLevel = position.zoom; // Update zoom level when camera moves
-              });
-            },
+            // onCameraMove: (position) {
+            //   setState(() {
+            //     mapZoomLevel = position.zoom; // Update zoom level when camera moves
+            //   });
+            // },
+            onCameraMove: _onCameraMove, // Update zoom level when camera moves
             onCameraIdle: () {
               _filterVisibleVehicules(); // Filter visible vehicles when the camera stops moving
             },

@@ -83,6 +83,8 @@
   "distance": "distance",
   "miles": "miles",
   "kilometers": "kilomètres",
+  "km": "km",
+  "choose_date_range": "Sélectionner une période de location",
   "change_locale_title": "Change la langue de l'application",
   "@change_locale_title": {
     "description": "Label for the language selection destination"

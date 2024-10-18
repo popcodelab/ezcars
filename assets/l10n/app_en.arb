@@ -83,6 +83,7 @@
   "distance": "distance",
   "miles": "miles",
   "kilometers": "kilometers",
+  "km": "km",
   "choose_date_range": "Choose a date range",
   "error_fetching_location": "Error fetching location. Please try again.'",
   "@error_fetching_location": {
