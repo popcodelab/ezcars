@@ -233,48 +233,63 @@ class SearchScreenState extends State<SearchScreen> {
   /// Filters the vehicles visible on the map based on the map's bounds and rental period.
   void _filterVisibleVehicules() async {
     if (mounted && mapController != null) {
-      // Get the bounds of the visible map area
-      LatLngBounds bounds = await mapController!.getVisibleRegion();
+      try {
+        // Get the bounds of the visible map area
+        LatLngBounds bounds = await mapController!.getVisibleRegion();
 
-      // Access the rental period from the global state (via Provider)
-      final rentalPeriodState = context.read<RentalPeriodProvider>();
+        // Access the rental period from the global state (via Provider)
+        final rentalPeriodState = context.read<RentalPeriodProvider>();
 
-      // Define the vehicle service
-      final IVehicleService vehicleService = VehicleService();
+        // Define the vehicle service
+        final IVehicleService vehicleService = VehicleService();
 
-      // Filter visible vehicles using the map service
-      visibleCars = _mapService.filterVisibleVehicules(vehicles, bounds, rentalPeriodState);
+        // Filter visible vehicles using the map service
+        visibleCars = _mapService.filterVisibleVehicules(vehicles, bounds, rentalPeriodState);
 
-      // Ensure _currentLatLng is a LatLng and convert it to a Position
-      if (_currentLatLng is LatLng) {
-        final LatLng currentLatLng = _currentLatLng as LatLng;
+        // Ensure _currentLatLng is a LatLng and convert it to a Position
+        if (_currentLatLng is LatLng) {
+          final LatLng currentLatLng = _currentLatLng as LatLng;
 
-        // Create a Position object from LatLng
-        final userPosition = Position(
-          latitude: currentLatLng.latitude,
-          longitude: currentLatLng.longitude,
-          timestamp: DateTime.now(),
-          altitude: 0,  // You can set these values accordingly
-          accuracy: 0,
-          heading: 0,
-          speed: 0,
-          speedAccuracy: -1.0,  // Use -1 to indicate unknown speed accuracy
-          altitudeAccuracy: -1.0,  // Use -1 to indicate unknown altitude accuracy
-          headingAccuracy: -1.0,  // Use -1 to indicate unknown heading accuracy
-        );
+          // Create a Position object from LatLng
+          final userPosition = Position(
+            latitude: currentLatLng.latitude,
+            longitude: currentLatLng.longitude,
+            timestamp: DateTime.now(),
+            altitude: 0,  // You can set these values accordingly
+            accuracy: 0,
+            heading: 0,
+            speed: 0,
+            speedAccuracy: -1.0,  // Use -1 to indicate unknown speed accuracy
+            altitudeAccuracy: -1.0,  // Use -1 to indicate unknown altitude accuracy
+            headingAccuracy: -1.0,  // Use -1 to indicate unknown heading accuracy
+          );
 
-        // Calculate distances based on the user's position
-        visibleCars = await vehicleService.calculateVehicleDistances(visibleCars, userPosition);
+          // Calculate distances based on the user's position
+          visibleCars = await vehicleService.calculateVehicleDistances(visibleCars, userPosition);
 
-        // Update the state with the updated visible cars
-        setState(() {
-          // No need to reassign, just trigger the rebuild with the updated list
-        });
-      } else {
-        print('Error: _currentLatLng is not of type LatLng');
+          // Sort the visible cars by distance
+          visibleCars.sort((a, b) => a.distance.compareTo(b.distance));
+
+          // Update the state with the updated visible cars
+          setState(() {
+            // Trigger the rebuild with the updated visibleCars
+          });
+        } else {
+          // Handle case where _currentLatLng is not a LatLng
+          _showError("Unable to fetch current location. Please try again.");
+        }
+      } catch (e) {
+        // General error handling for any issues during the process
+        _showError("An error occurred while filtering vehicles: $e");
       }
     }
   }
+
+  void _showError(String message) {
+    // Show a Snackbar with the error message
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
+  }
+
 
   /// Adds a custom label marker (e.g., "15 mins") to the map above the user's location.
   Future<void> _addCustomLabelMarker() async {
