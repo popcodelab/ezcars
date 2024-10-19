@@ -1,6 +1,8 @@
 import 'dart:async'; // For managing asynchronous tasks like fetching data
 import 'dart:typed_data'; // For handling binary data such as image bytes
 
+import 'package:ezcars/features/search/services/i_map_circle_label_service.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart'; // Flutter UI framework
 import 'package:google_maps_flutter/google_maps_flutter.dart'; // Google Maps plugin for Flutter
 import 'package:provider/provider.dart'; // State management (global state)
@@ -67,6 +69,11 @@ class SearchScreenState extends State<SearchScreen> {
       circlesService: MapTransparentCircleService(),
     );
 
+    // Listen for changes in WalkingRadiusProvider and update circles when the radius changes
+    context.read<WalkingRadiusProvider>().addListener(() {
+      _updateCircles(mapZoomLevel);
+    });
+
     _initData(); // Initialize data (fetch vehicles and location)
   }
 
@@ -74,13 +81,6 @@ class SearchScreenState extends State<SearchScreen> {
   void _initData() {
     _fetchVehicules();
     _fetchUserLocation();
-
-    // Delay camera movement to avoid interruptions after returning from another screen
-    // if (widget.vehicleLocation != null) {
-    //   Future.delayed(const Duration(milliseconds: 500), () {
-    //     _animateOrMoveToLocation(widget.vehicleLocation!, mapZoomLevel, instantMove: true);
-    //   });
-    // }
   }
 
   void _onCameraMove(CameraPosition position) {
@@ -186,20 +186,47 @@ class SearchScreenState extends State<SearchScreen> {
   }
 
   /// Updates the transparent circles drawn on the map based on the user's location.
-  void _updateCircles(double zoomLevel) {
+  void _updateCircles(double zoomLevel) async {
     if (_currentLatLng != null) {
+      // Use the walking radius from the provider instead of the hardcoded value
+      double walkingRadius = context.read<WalkingRadiusProvider>().walkingRadius;
       setState(() {
-        // Use the walking radius from the provider instead of the hardcoded value
-        double walkingRadius = context.read<WalkingRadiusProvider>().walkingRadius;
 
+
+        // Update the walking radius circle on the map
         boundsCircle = _mapService.updateCircles(
           _currentLatLng!, // User's current location
           walkingRadius, // Walking radius in meters
           0.4, // Opacity of the circle
         );
       });
+
+      try {
+        // Check if the marker already exists
+        Marker existingMarker = markers.firstWhere(
+              (marker) => marker.markerId.value == 'userCircleMarker',
+        );
+
+        // If the marker exists, relocate it
+        final Uint8List markerIcon = await _mapService.addCustomLabelMarker(_currentLatLng!, walkingRadius);
+        final IMapCircleLabelService mapCircleLabelService = MapCircleLabelService();
+        final Marker relocatedMarker = await mapCircleLabelService.relocateCustomMarker(_currentLatLng!, walkingRadius, markerIcon);
+
+        setState(() {
+          // Remove the old marker and add the relocated one
+          markers.remove(existingMarker);
+          markers.add(relocatedMarker);
+        });
+      } catch (e) {
+        // Marker doesn't exist, do nothing or log the error
+        if (kDebugMode) {
+          print('Marker for user circle not found: $e');
+        }
+      }
     }
   }
+
+
 
   /// Filters the vehicles visible on the map based on the map's bounds and rental period.
   void _filterVisibleVehicules() async {
@@ -229,7 +256,7 @@ class SearchScreenState extends State<SearchScreen> {
         // Add the custom marker to the map
         markers.add(
           Marker(
-            markerId: const MarkerId('customLabel'), // Unique ID for the label marker
+            markerId: const MarkerId('userCircleMarker'), // Unique ID for the label marker
             position: LatLng(_currentLatLng!.latitude + (walkingRadius / 111000.0),
                 _currentLatLng!.longitude), // Position above user's location
             icon: BitmapDescriptor.bytes(markerIcon), // Custom icon
@@ -297,7 +324,6 @@ class SearchScreenState extends State<SearchScreen> {
     final theme = Theme.of(context);
     final rentalPeriodProvider = context.watch<RentalPeriodProvider>();
     final locationProvider = context.watch<LocationProvider>();
-
     // Format start and end date-time for display
     DateTimeFormatter.getFormattedDateTime(
         rentalPeriodProvider.startDate, rentalPeriodProvider.startTime);
@@ -343,11 +369,6 @@ class SearchScreenState extends State<SearchScreen> {
                   _currentLatLng ?? const LatLng(34.0522, -118.2437), // Default to LA or the selected vehicle location
               zoom: mapZoomLevel,
             ),
-            // onCameraMove: (position) {
-            //   setState(() {
-            //     mapZoomLevel = position.zoom; // Update zoom level when camera moves
-            //   });
-            // },
             onCameraMove: _onCameraMove, // Update zoom level when camera moves
             onCameraIdle: () {
               _filterVisibleVehicules(); // Filter visible vehicles when the camera stops moving
