@@ -104,7 +104,7 @@ class VehicleService implements IVehicleService {
         location: 'Midtown Garage',
         distance: 0,
         latitude: 37.4219983,
-        longitude: -122.084,
+        longitude: -122.184,
         type: 'gas', // Gas-powered vehicle
         unavailabilityPeriods: [
           UnavailabilityPeriod(
@@ -140,7 +140,7 @@ class VehicleService implements IVehicleService {
       List<Vehicle> vehicles, Position userPosition,
       {String unit = 'miles'}) async {
     return vehicles.map((vehicle) {
-      double distanceInMeters = _calculateDistance(
+      double distanceInMeters = _calculateDistanceBetween2Objects(
         userPosition.latitude,
         userPosition.longitude,
         vehicle.latitude,
@@ -160,7 +160,7 @@ class VehicleService implements IVehicleService {
     double radius = radiusProvider.walkingRadius;
 
     return vehicles.where((vehicle) {
-      double distanceInMeters = _calculateDistance(
+      double distanceInMeters = _calculateDistanceBetween2Objects(
         userPosition.latitude,
         userPosition.longitude,
         vehicle.latitude,
@@ -175,7 +175,7 @@ class VehicleService implements IVehicleService {
   }
 
   /// Helper function to calculate the distance between two points using Haversine formula
-  double _calculateDistance(
+  double _calculateDistanceBetween2Objects(
       double lat1, double lon1, double lat2, double lon2) {
     const double earthRadiusMeters = 6371000;
     final double dLat = _degreesToRadians(lat2 - lat1);
