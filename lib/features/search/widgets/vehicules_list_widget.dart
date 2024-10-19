@@ -1,9 +1,9 @@
 import 'package:ezcars/extensions/string_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-
+import 'package:provider/provider.dart';
+import '../../../providers/distance_unit_provider.dart';
 import '../../../models/vehicle.dart';
-
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class VehiculesListWidget extends StatelessWidget {
@@ -95,7 +95,16 @@ class VehiculesListWidget extends StatelessWidget {
                         const SizedBox(height: 5),
                         Text(vehicles[index].location),
                         const SizedBox(height: 5),
-                        Text(vehicles[index].distance.toStringAsFixed(1)),
+                        // Use Consumer to dynamically update distance display with the correct unit
+                        Consumer<DistanceUnitProvider>(
+                          builder: (context, distanceUnitProvider, child) {
+                            final displayUnit = (distanceUnitProvider.distanceUnit == 'kilometers') ? 'km' : 'miles';
+                            return Text(
+                              '${vehicles[index].distance.toStringAsFixed(2)} $displayUnit',
+                              style: const TextStyle(fontSize: 14),
+                            );
+                          },
+                        ),
                       ],
                     ),
                   ),

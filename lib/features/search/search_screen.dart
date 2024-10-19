@@ -2,8 +2,10 @@ import 'dart:async'; // For managing asynchronous tasks like fetching data
 import 'dart:typed_data'; // For handling binary data such as image bytes
 
 import 'package:ezcars/features/search/services/i_map_circle_label_service.dart';
+import 'package:ezcars/services/i_vehicle_service.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart'; // Flutter UI framework
+import 'package:geolocator_platform_interface/src/models/position.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart'; // Google Maps plugin for Flutter
 import 'package:provider/provider.dart'; // State management (global state)
 
@@ -237,10 +239,40 @@ class SearchScreenState extends State<SearchScreen> {
       // Access the rental period from the global state (via Provider)
       final rentalPeriodState = context.read<RentalPeriodProvider>();
 
-      // Filter the visible vehicles using the map service
-      setState(() {
-        visibleCars = _mapService.filterVisibleVehicules(vehicles, bounds, rentalPeriodState);
-      });
+      // Define the vehicle service
+      final IVehicleService vehicleService = VehicleService();
+
+      // Filter visible vehicles using the map service
+      visibleCars = _mapService.filterVisibleVehicules(vehicles, bounds, rentalPeriodState);
+
+      // Ensure _currentLatLng is a LatLng and convert it to a Position
+      if (_currentLatLng is LatLng) {
+        final LatLng currentLatLng = _currentLatLng as LatLng;
+
+        // Create a Position object from LatLng
+        final userPosition = Position(
+          latitude: currentLatLng.latitude,
+          longitude: currentLatLng.longitude,
+          timestamp: DateTime.now(),
+          altitude: 0,  // You can set these values accordingly
+          accuracy: 0,
+          heading: 0,
+          speed: 0,
+          speedAccuracy: -1.0,  // Use -1 to indicate unknown speed accuracy
+          altitudeAccuracy: -1.0,  // Use -1 to indicate unknown altitude accuracy
+          headingAccuracy: -1.0,  // Use -1 to indicate unknown heading accuracy
+        );
+
+        // Calculate distances based on the user's position
+        visibleCars = await vehicleService.calculateVehicleDistances(visibleCars, userPosition);
+
+        // Update the state with the updated visible cars
+        setState(() {
+          // No need to reassign, just trigger the rebuild with the updated list
+        });
+      } else {
+        print('Error: _currentLatLng is not of type LatLng');
+      }
     }
   }
 
