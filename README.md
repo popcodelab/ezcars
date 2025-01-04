@@ -113,14 +113,14 @@ To get started with the app locally, follow these steps:
 ### 1. Clone the Repository
 First, clone the repository to your local machine using Git:
 ```bash
-git clone https://github.com/username/MyApp.git
+https://github.com/popcodelab/ezcars
 ```
 
 ### 2. Navigate to the Project Directory
 Once the repository is cloned, navigate into the project directory where the app files are located. Use the following command:
 
 ```bash
-cd MyApp
+cd ezcars
 ```
 
 ### 3. Install Dependencies
@@ -142,7 +142,7 @@ To enable Google Maps functionality within the app, you need to configure the AP
 
 Example of the `keys.dart` file:
 
-```dart
+```
 class APIKeys {
    static String androidPlacesApiKey = "YOUR DROID KEY HERE";
    static String iosApiKey = "YOUR IOS KEY HERE";
