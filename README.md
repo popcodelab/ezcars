@@ -6,8 +6,6 @@
 **Ezcars** is a peer-to-peer (P2P) car rental mockup application built using Flutter. This app integrates with the **Google Maps API** to allow users to browse and manage rental vehicles, displaying car locations on an interactive map. Users can navigate through multiple screens to view car details, manage their profile, adjust settings, and search for available rental cars.
 
 ## Table of Contents
-- [Ezcars](#ezcars)
-  - [Table of contents](#table-of-contents)
 - [Ezcars - P2P Car Rental Mockup](#ezcars---p2p-car-rental-mockup)
   - [Table of Contents](#table-of-contents-1)
   - [Features](#features)
@@ -103,8 +101,6 @@ The app is fully localized (l10n), supporting multiple languages. It uses the Ap
 - Language fallback mechanism for unsupported locales.
 
 ## Technical Overview
-
-## Getting Started
 
 ## Getting Started
 
